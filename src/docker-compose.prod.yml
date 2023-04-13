@@ -1,0 +1,12 @@
+version: "3"
+services:
+  frontend:
+    container_name: bs-frontend-prod
+    build:
+      context: ./frontend
+      dockerfile: prod.Dockerfile
+    environment:
+      - NODE_ENV=production
+    ports:
+      - 80:3000
+    image: bs-frontend-prod
