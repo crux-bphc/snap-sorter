@@ -1,0 +1,13 @@
+version: "3"
+services:
+  frontend:
+    container_name: bs-frontend-dev
+    build:
+      context: ./frontend
+      dockerfile: dev.Dockerfile
+    ports:
+      - 3000:3000
+    volumes:
+      - ./frontend/src:/app/src
+      - ./frontend/public:/app/public
+    image: bs-frontend-dev
