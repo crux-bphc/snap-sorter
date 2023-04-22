@@ -4,23 +4,18 @@ from PIL import Image
 import torch
 from facenet_pytorch import MTCNN, InceptionResnetV1
 
-device = 'cuda:0' if torch.cuda.is_available() else 'cpu'
-
-# Face detector
-DETECTOR = MTCNN(keep_all=True, device='cpu').eval()
-
-# Facial recognition model
-RESNET = InceptionResnetV1(pretrained='vggface2', device=device).eval()
-
-
 class EmbeddingPipeline:
     '''
         pipeline class for detecting faces from a single image and converting to embedding vectors
     '''
-    def __init__(self, detector=MTCNN, resnet=RESNET, resize=None):
-        self.detector = detector
+    def __init__(self, detector = None, resnet = None, device = 'cpu', pretrained = 'vggface2', resize=None):
+        
+        DETECTOR = MTCNN(keep_all=True, device=device).eval()
+        RESNET = InceptionResnetV1(pretrained=pretrained, device=device).eval()
+        
+        self.detector = DETECTOR if detector is None else detector
         self.resize = resize
-        self.resnet = resnet
+        self.resnet = RESNET if resnet is None else resnet
         
         
     def __call__(self, filepath: str):
@@ -29,21 +24,23 @@ class EmbeddingPipeline:
             
             Args:
                 filepath {str} -- path of the image file
+            
+            Returns:
+                embeddings {list} -- list of embedding vectors
         '''
         
         img = Image.open(filepath)
         
         # img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
-        # img = self._equalize(img)
+        
+        # img = ImageOps.equalize(img, mask = None)
         
         if self.resize is not None:
             img = img.resize([int(d*self.resize) for d in img.size])
         
-        detected_faces = []
-        
         # img = Image.fromarray(img)
         
-        detected_faces.extend(self.detector(img))
+        detected_faces = self.detector(img)
         
         embeddings = self.create_embeddings(detected_faces)
         
