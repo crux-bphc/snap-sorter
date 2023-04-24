@@ -42,7 +42,7 @@ class EmbeddingPipeline:
         
         detected_faces = self.detector(img)
         
-        embeddings = self.create_embeddings(detected_faces)
+        embeddings = self._create_embeddings(detected_faces)
         
         return embeddings  
     
@@ -57,7 +57,7 @@ class EmbeddingPipeline:
         processed = cv2.merge((l1, a, b))
         return cv2.cvtColor(processed, cv2.COLOR_LAB2RGB)
     
-    def create_embeddings(self, faces: list):
+    def _create_embeddings(self, faces: list):
         '''
             converts array of faces to embedding vectors
             
