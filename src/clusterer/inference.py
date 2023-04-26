@@ -1,6 +1,7 @@
 from PIL import Image
 import torch
 from facenet_pytorch import MTCNN, InceptionResnetV1
+import numpy as np
 
 class EmbeddingPipeline:
     """
@@ -68,8 +69,8 @@ class EmbeddingPipeline:
                 faces (list[torch.tensor]): list of tensors of detected faces 
             
             Returns:
-                list of embedding vectors of size {torch.Size([1, 512])}
+                numpy array of embedding vectors of size {torch.Size([1, 512])}
 
         """
-        embeddings = [self.resnet(f[None,:]) for f in faces]
+        embeddings = np.array([self.resnet(torch.unsqueeze(face, 0)).detach().numpy() for face in faces])
         return embeddings
