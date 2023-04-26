@@ -1,7 +1,4 @@
-# import cv2
-
 from PIL import Image
-import torch
 from facenet_pytorch import MTCNN, InceptionResnetV1
 
 class EmbeddingPipeline:
@@ -31,31 +28,14 @@ class EmbeddingPipeline:
         
         img = Image.open(filepath)
         
-        # img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
-        
-        # img = ImageOps.equalize(img, mask = None)
-        
         if self.resize is not None:
             img = img.resize([int(d*self.resize) for d in img.size])
-        
-        # img = Image.fromarray(img)
         
         detected_faces = self.detector(img)
         
         embeddings = self._create_embeddings(detected_faces)
         
         return embeddings  
-    
-    def _equalize(self, img):
-        '''
-            Applies adaptive histogram equalization (enhances contrast)
-        '''
-        lab = cv2.cvtColor(img, cv2.COLOR_RGB2LAB)
-        l, a, b = cv2.split(lab)
-        clahe = cv2.createCLAHE(clipLimit=2.0, tileGridSize=(8, 8))
-        l1 = clahe.apply(l)
-        processed = cv2.merge((l1, a, b))
-        return cv2.cvtColor(processed, cv2.COLOR_LAB2RGB)
     
     def _create_embeddings(self, faces: list):
         '''
@@ -70,6 +50,3 @@ class EmbeddingPipeline:
         '''
         embeddings = [self.resnet(f[None,:]) for f in faces]
         return embeddings
-
-
-
