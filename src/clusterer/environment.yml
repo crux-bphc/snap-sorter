@@ -189,3 +189,4 @@ dependencies:
       - facenet-pytorch==2.5.3
       - mpmath==1.2.1
       - pyqt5-sip==12.11.0
+      - scikit-learn==1.2.1
