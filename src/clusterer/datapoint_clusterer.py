@@ -18,9 +18,9 @@ class Datapoint:
         Initializes the instance
 
         Args:
-            Data/embedding: torch.Tensor of size(1, n)
-            Label: integer
-            Path: str - path to the containing image
+            Data/embedding (torch.Tensor) : of shape (1, n)
+            Label (int) : identifier
+            Path (str) : path to the containing image
         """
         self.data = data
         self.label = label
@@ -31,13 +31,13 @@ class Cluster:
     Class that defines each cluster of similar datapoints. 
     
     Attributes:
-        id: integer - unique ID of the cluster as set by the clustering 
+        id (int) : unique ID of the cluster as set by the clustering 
                       algorithm
-        paths: list[str] - list of paths to images containing datapoints
-        mean_encoding: mean encoding of the faces grouped under the cluster
-        std_dev: standard deviation of the individual encodings detected as 
+        paths (list[str]) : list of paths to images containing datapoints
+        mean_encoding (list[float]) : mean encoding of the faces grouped under the cluster
+        std_dev (list[float]): standard deviation of the individual encodings detected as 
                  similar
-        size: number of datapoints grouped under the cluster
+        size (int): number of datapoints grouped under the cluster
 
     Class methods:
     add_paths - adds new paths to the cluster's list of paths
@@ -47,7 +47,7 @@ class Cluster:
         Initializes the instance
 
         Args:
-            id: int - Label ID associated with the cluster
+            id (int) : Label ID associated with the cluster
         """
         self.id = id
         self.paths = []
@@ -61,7 +61,7 @@ class Cluster:
         size of the cluster
 
         Args:
-            paths: list[str] - list of paths 
+            paths (list[str]) : list of paths 
 
         Returns:
             None
@@ -75,15 +75,15 @@ def create_clusters(_datapoints: list[Datapoint], _epsilon:float, _min_samples:i
     Returns a list of clusters
 
     Args: 
-        datapoints: list[Datapoint] - a list of datapoint objects from which 
+        datapoints (list[Datapoint]) : a list of datapoint objects from which 
                                       data and path are extracted
-        epsilon: float - the value of epsilon used by the DBSCAN clusterer, max 
+        _epsilon (float) : the value of epsilon used by the DBSCAN clusterer, max 
                          distance for a point to be considered a neighbour
-        min_samples: int - minimum number of neighbours for a point to be 
+        min_samples (int) : minimum number of neighbours for a point to be 
                            considered a core point
 
     Returns:
-        clusters: list[Cluster] - a list of clusters found
+        list[Cluster] : a list of clusters found
     """
     points = np.array([point.data[0].numpy() for point in _datapoints]) 
     scaler = StandardScaler()
@@ -114,8 +114,8 @@ def write_clusters(clusters: list[Cluster], _filename: str):
     Writes clusters to a .pkl file with specified path
 
     Args:
-        clusters: list[Cluster] - list of clusters to be written to a file
-        _filename: str - name of the file clusters are to be written to
+        clusters (list[Cluster]) : list of clusters to be written to a file
+        _filename (str) : name of the file clusters are to be written to
 
     Returns:
         None
@@ -131,10 +131,10 @@ def read_datapoints(_filename: str):
     Reads datapoints from a specified .pkl file
 
     Args:
-        _filename: str - name of the file data is to be read from
+        _filename (str) : name of the file data is to be read from
 
     Returns:
-        datapoints: list[Datapoint]
+        list[Datapoint]
     """
     datapoints = None
     filename = _filename
