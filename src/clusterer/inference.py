@@ -46,7 +46,7 @@ class EmbeddingPipeline:
                 filepath (str): path to the image file
             
             Returns:
-                list of embedding vectors of size {torch.Size([1, 512])}
+                numpy array of embedding vectors of size {torch.Size([1, 512])}
 
         """
         
