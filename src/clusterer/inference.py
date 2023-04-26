@@ -1,11 +1,33 @@
 from PIL import Image
+import torch
 from facenet_pytorch import MTCNN, InceptionResnetV1
 
 class EmbeddingPipeline:
-    '''
-        pipeline class for detecting faces from a single image and converting to embedding vectors
-    '''
-    def __init__(self, detector = None, resnet = None, device = 'cpu', pretrained = 'vggface2', resize=None):
+    """
+        Pipeline class for detecting faces from a single image and converting to embedding vectors
+        
+        Attributes:
+            detector (MTCNN): MTCNN detector object. Defaults to MTCNN(keep_all=True, device=device).eval().
+            resnet (InceptionResnetV1): InceptionResnetV1 object. Defaults to InceptionResnetV1(pretrained=pretrained, device=device).eval().
+            device (str): device to run the model on. Defaults to 'cpu'.
+            pretrained (str): pretrained model to use. Defaults to 'vggface2'.
+            resize (float): resize factor for the image. Defaults to None.
+            
+    """
+    def __init__(self, detector: MTCNN = None, resnet: InceptionResnetV1 = None, device: str = 'cpu', pretrained: str = 'vggface2', resize: float = None):
+        
+        """
+        Constructor for EmbeddingPipeline class
+        
+        Args:
+            detector (MTCNN): MTCNN detector object. Defaults to MTCNN(keep_all=True, device=device).eval().
+            detector (MTCNN): MTCNN detector object. Defaults to MTCNN(keep_all=True, device=device).eval().
+            resnet (InceptionResnetV1): InceptionResnetV1 object. Defaults to InceptionResnetV1(pretrained=pretrained, device=device).eval().
+            device (str): device to run the model on. Defaults to 'cpu'.
+            pretrained (str): pretrained model to use. Defaults to 'vggface2'.
+            resize (float): resize factor for the image. Defaults to None.
+            
+        """
         
         DETECTOR = MTCNN(keep_all=True, device=device).eval()
         RESNET = InceptionResnetV1(pretrained=pretrained, device=device).eval()
@@ -16,15 +38,16 @@ class EmbeddingPipeline:
         
         
     def __call__(self, filepath: str):
-        '''
-            reads the image, processes it, optionally resizes it and detects faces
+        """
+            Reads the image, processes it, optionally resizes it and detects faces
             
             Args:
-                filepath {str} -- path of the image file
+                filepath (str): path to the image file
             
             Returns:
-                embeddings {list} -- list of embedding vectors
-        '''
+                list of embedding vectors of size {torch.Size([1, 512])}
+
+        """
         
         img = Image.open(filepath)
         
@@ -37,16 +60,16 @@ class EmbeddingPipeline:
         
         return embeddings  
     
-    def _create_embeddings(self, faces: list):
-        '''
-            converts array of faces to embedding vectors
+    def _create_embeddings(self, faces: list[torch.tensor]):
+        """
+            Converts array of faces to embedding vectors
             
             Args:
-                faces {list} -- list of tensors of detected faces 
+                faces (list[torch.tensor]): list of tensors of detected faces 
             
             Returns:
                 list of embedding vectors of size {torch.Size([1, 512])}
 
-        '''
+        """
         embeddings = [self.resnet(f[None,:]) for f in faces]
         return embeddings
