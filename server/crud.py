@@ -59,7 +59,6 @@ def get_images(db: Session, skip: int = 0, limit: int = 100):
 def tag_image(db: Session, image_id: int, user_id: int):
     db_image = db.query(models.Image).filter(models.Image.id == image_id).first()
     db_user = db.query(models.User).filter(models.User.id == user_id).first()
-    print(db_image, db_user)
     db_image.users.append(db_user)
     print("tagged")
     db.commit()
