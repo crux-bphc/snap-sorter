@@ -47,12 +47,14 @@ def read_user(user_id: int, db: Session = Depends(get_db)):
     return db_user
 
 
-# # Get a user by BITS ID
-# def read_user_by_bits_id(bits_id: str, db: Session = Depends(get_db)):
-#     db_user = crud.get_user_by_bits_id(db, bits_id=bits_id)
-#     if db_user is None:
-#         raise HTTPException(status_code=404, detail="User not found")
-#     return db_user
+# Get a user by BITS ID
+@app.get("/users/bits_id/{bits_id}", response_model=schemas.User)
+def read_user_by_bits_id(bits_id: str, db: Session = Depends(get_db)):
+    db_user = crud.get_user_by_bits_id(db, bits_id=bits_id)
+    if db_user is None:
+        raise HTTPException(status_code=404, detail="User not found")
+    return db_user
+
 
 # # Get a user by email
 # def read_user_by_email(email: str, db: Session = Depends(get_db)):
