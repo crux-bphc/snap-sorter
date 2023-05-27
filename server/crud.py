@@ -3,6 +3,17 @@ from sqlalchemy.orm import Session
 import models, schemas
 
 
+# User CRUD
+
+
+def create_user(db: Session, user: schemas.UserCreate):
+    db_user = models.User(bits_id=user.bits_id, email=user.email, name=user.name)
+    db.add(db_user)
+    db.commit()
+    db.refresh(db_user)
+    return db_user
+
+
 def get_user(db: Session, user_id: int):
     return db.query(models.User).filter(models.User.id == user_id).first()
 
@@ -19,12 +30,15 @@ def get_users(db: Session, skip: int = 0, limit: int = 100):
     return db.query(models.User).offset(skip).limit(limit).all()
 
 
-def create_user(db: Session, user: schemas.UserCreate):
-    db_user = models.User(bits_id=user.bits_id, email=user.email, name=user.name)
-    db.add(db_user)
+# Image CRUD
+
+
+def create_image(db: Session, image: schemas.ImageCreate):
+    db_image = models.Image(filepath=image.filepath, event=image.event, date=image.date)
+    db.add(db_image)
     db.commit()
-    db.refresh(db_user)
-    return db_user
+    db.refresh(db_image)
+    return db_image
 
 
 def get_image(db: Session, image_id: int):
@@ -39,12 +53,7 @@ def get_images(db: Session, skip: int = 0, limit: int = 100):
     return db.query(models.Image).offset(skip).limit(limit).all()
 
 
-def create_image(db: Session, image: schemas.ImageCreate):
-    db_image = models.Image(filepath=image.filepath, event=image.event, date=image.date)
-    db.add(db_image)
-    db.commit()
-    db.refresh(db_image)
-    return db_image
+# Tagging
 
 
 def tag_image(db: Session, image_id: int, user_id: int):

@@ -1,3 +1,4 @@
+from datetime import datetime
 from pydantic import BaseModel
 
 
@@ -10,7 +11,7 @@ class UserBase(BaseModel):
 class ImageBase(BaseModel):
     filepath: str
     event: str
-    date: str
+    date: datetime
     # location: str
     # photographer: str
 
