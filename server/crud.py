@@ -55,18 +55,22 @@ def get_images(db: Session, skip: int = 0, limit: int = 100):
 
 # Tagging
 
-# Not working
-
 
 def tag_image(db: Session, image_id: int, user_id: int):
     db_image = db.query(models.Image).filter(models.Image.id == image_id).first()
     db_user = db.query(models.User).filter(models.User.id == user_id).first()
+    print(db_image, db_user)
     db_image.users.append(db_user)
+    print("tagged")
     db.commit()
+    print("committed")
     db.refresh(db_image)
-    return db_image
+    return {
+        "image_id": db_image.id,
+        "user_id": db_user.id,
+    }
 
 
-def get_images_with_tag(db: Session, user_id: int):
+def get_images_with_tag(db: Session, user_id: int) -> list[schemas.Image]:
     db_user = db.query(models.User).filter(models.User.id == user_id).first()
     return db_user.images

@@ -17,9 +17,6 @@ class User(Base):
         "Image", secondary="association_table", back_populates="users"
     )
 
-    def __repr__(self):
-        return f"<User {self.id}, >"
-
 
 class Image(Base):
     __tablename__ = "images"
@@ -31,9 +28,6 @@ class Image(Base):
     # location = Column(String, index=True)
     # photographer = Column(String, index=True)
     users = relationship("User", secondary="association_table", back_populates="images")
-
-    def __repr__(self):
-        return f"<Image {self.filename}>"
 
 
 association_table = Table(
