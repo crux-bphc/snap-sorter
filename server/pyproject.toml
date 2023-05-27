@@ -10,6 +10,7 @@ python = "^3.10"
 fastapi = {extras = ["all"], version = "^0.95.2"}
 black = "^23.3.0"
 python-multipart = "^0.0.6"
+sqlalchemy = "^2.0.15"
 
 
 [build-system]
