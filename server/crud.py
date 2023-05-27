@@ -60,7 +60,6 @@ def tag_image(db: Session, image_id: int, user_id: int):
     db_image = db.query(models.Image).filter(models.Image.id == image_id).first()
     db_user = db.query(models.User).filter(models.User.id == user_id).first()
     db_image.users.append(db_user)
-    print("tagged")
     db.commit()
     print("committed")
     db.refresh(db_image)
