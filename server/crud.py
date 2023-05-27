@@ -61,7 +61,6 @@ def tag_image(db: Session, image_id: int, user_id: int):
     db_user = db.query(models.User).filter(models.User.id == user_id).first()
     db_image.users.append(db_user)
     db.commit()
-    print("committed")
     db.refresh(db_image)
     return {
         "image_id": db_image.id,
