@@ -76,3 +76,14 @@ def create_image(image: schemas.ImageCreate, db: Session = Depends(get_db)):
     if db_image:
         raise HTTPException(status_code=400, detail="Image already registered")
     return crud.create_image(db=db, image=image)
+
+
+# Get an image by id
+
+
+@app.get("/images/{image_id}", response_model=schemas.Image)
+def read_image(image_id: int, db: Session = Depends(get_db)):
+    db_image = crud.get_image(db, image_id=image_id)
+    if db_image is None:
+        raise HTTPException(status_code=404, detail="Image not found")
+    return db_image
