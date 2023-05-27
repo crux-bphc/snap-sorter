@@ -7,6 +7,10 @@ def get_user(db: Session, user_id: int):
     return db.query(models.User).filter(models.User.id == user_id).first()
 
 
+def get_user_by_bits_id(db: Session, bits_id: str):
+    return db.query(models.User).filter(models.User.bits_id == bits_id).first()
+
+
 def get_user_by_email(db: Session, email: str):
     return db.query(models.User).filter(models.User.email == email).first()
 
@@ -16,21 +20,42 @@ def get_users(db: Session, skip: int = 0, limit: int = 100):
 
 
 def create_user(db: Session, user: schemas.UserCreate):
-    fake_hashed_password = user.password + "notreallyhashed"
-    db_user = models.User(email=user.email, hashed_password=fake_hashed_password)
+    db_user = models.User(bits_id=user.bits_id, email=user.email, name=user.name)
     db.add(db_user)
     db.commit()
     db.refresh(db_user)
     return db_user
 
 
-def get_items(db: Session, skip: int = 0, limit: int = 100):
-    return db.query(models.Item).offset(skip).limit(limit).all()
+def get_image(db: Session, image_id: int):
+    return db.query(models.Image).filter(models.Image.id == image_id).first()
 
 
-def create_user_item(db: Session, item: schemas.ItemCreate, user_id: int):
-    db_item = models.Item(**item.dict(), owner_id=user_id)
-    db.add(db_item)
+def get_image_by_filepath(db: Session, filepath: str):
+    return db.query(models.Image).filter(models.Image.filepath == filepath).first()
+
+
+def get_images(db: Session, skip: int = 0, limit: int = 100):
+    return db.query(models.Image).offset(skip).limit(limit).all()
+
+
+def create_image(db: Session, image: schemas.ImageCreate):
+    db_image = models.Image(filepath=image.filepath, event=image.event, date=image.date)
+    db.add(db_image)
     db.commit()
-    db.refresh(db_item)
-    return db_item
+    db.refresh(db_image)
+    return db_image
+
+
+def tag_image(db: Session, image_id: int, user_id: int):
+    db_image = db.query(models.Image).filter(models.Image.id == image_id).first()
+    db_user = db.query(models.User).filter(models.User.id == user_id).first()
+    db_image.users.append(db_user)
+    db.commit()
+    db.refresh(db_image)
+    return db_image
+
+
+def get_images_with_tag(db: Session, user_id: int):
+    db_user = db.query(models.User).filter(models.User.id == user_id).first()
+    return db_user.images
