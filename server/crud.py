@@ -55,6 +55,8 @@ def get_images(db: Session, skip: int = 0, limit: int = 100):
 
 # Tagging
 
+# Not working
+
 
 def tag_image(db: Session, image_id: int, user_id: int):
     db_image = db.query(models.Image).filter(models.Image.id == image_id).first()
