@@ -50,8 +50,6 @@ def create_user(
 
 # Get a user by id (or) bits_id
 
-# example bits_id: 2021A7PS0001H
-
 
 @app.get("/users/")
 def read_user(
@@ -78,7 +76,8 @@ def read_user(
 ):
     db_user = None
     if using_bits_id:
-        check = re.match("^\d{4}[A-Z][1-7][P|T]S\d{4}H$", bits_id) or re.match(
+        # single degree ID match (eg: 2018A7PS0001H) or dual degree ID match (eg: 2018B4A70001H)
+        check: bool = re.match("^\d{4}[A-Z][1-7][P|T]S\d{4}H$", bits_id) or re.match(
             "^\d{4}[A-B][1-7][A-B][1-7]\d{4}H$", bits_id
         )
         if not check:
