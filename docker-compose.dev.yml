@@ -1,13 +1,14 @@
-version: "3"
+version: "3.8"
 services:
   frontend:
-    container_name: bs-frontend-dev
+    container_name: snap-sorter-frontend-dev
     build:
       context: ./frontend
       dockerfile: dev.Dockerfile
+    environment:
+      NODE_ENV: development
     ports:
-      - 3000:3000
+      - 5173:5173
     volumes:
       - ./frontend/src:/app/src
-      - ./frontend/public:/app/public
-    image: bs-frontend-dev
+    image: snap-sorter-frontend-dev
