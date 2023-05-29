@@ -10,6 +10,17 @@ pnpm install
 pnpm dev
 ```
 
+### Using docker
+
+```bash
+# To start
+# Replace dev with prod to run prod
+docker compose -f docker-compose.dev.yml up
+
+# To stop
+docker compose -f docker-compose.dev.yml down
+```
+
 ## Building
 
 To create a production version of your app:
