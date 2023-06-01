@@ -72,5 +72,8 @@ class EmbeddingPipeline:
                 numpy array of embedding vectors of size {torch.Size([1, 512])}
 
         """
-        embeddings = np.array([self.resnet(torch.unsqueeze(face, 0)).detach().numpy() for face in faces])
-        return embeddings
+        if faces is not None:
+            embeddings = np.array([self.resnet(torch.unsqueeze(face, 0)).detach().numpy() for face in faces])
+            return embeddings
+        else:
+            return None
