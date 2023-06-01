@@ -11,7 +11,8 @@ class FaceNet:
     Attributes:
     model (InceptionResnetV1) : model used to generate embeddings
     embedding_size (int) : desired size of output embedding
-    fc - output layer that connects the model output layer to desired embedding size
+    self.n_features (int) : number of input features of the last linear layer
+    self.n_bn_features (int) : number of input features of last batch normalization layer
     """
     def __init__(self, embedding_size: int=256):
         """
@@ -103,7 +104,7 @@ class FaceNet:
         Trains a model on given data
 
         Args: 
-            train_data () : Data to train the model on (anchor, positive, negative)
+            train_data (Dataset) : Data to train the model on in the form of a triplet dataset
             batch_size (int)
             n_epochs (int)
             learning_rate (float)
