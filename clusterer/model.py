@@ -1,7 +1,7 @@
 from facenet_pytorch import InceptionResnetV1
 import torch
 import torch.nn as nn
-from torch.utils.data import DataLoader
+from torch.utils.data import DataLoader, Dataset
 import torch.optim as optim
 
 class FaceNet:
@@ -22,8 +22,10 @@ class FaceNet:
         """
         self.embedding_size: int = embedding_size
         self.model = InceptionResnetV1(pretrained='vggface2').eval()
-        n_features = self.model.last_linear.in_features
-        self.model.last_linear = nn.Linear(n_features, self.embedding_size)
+        self.n_features = self.model.last_linear.in_features
+        self.model.last_linear = nn.Linear(self.n_features, self.embedding_size)
+        self.n_bn_features = self.model.last_bn.num_features
+        self.model.last_bn = nn.BatchNorm1d(embedding_size)
         self.model.classify = False
         #self.fc = torch.nn.Linear(512, embedding_size)
     
@@ -96,7 +98,7 @@ class FaceNet:
         facenet.model.classify = False
         return facenet
     
-    def train(self, train_data, batch_size : int, n_epochs : int, learning_rate : float):
+    def train(self, train_data: Dataset, batch_size : int, n_epochs : int, learning_rate : float):
         """
         Trains a model on given data
 
