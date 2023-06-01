@@ -1,5 +1,8 @@
 from facenet_pytorch import InceptionResnetV1
 import torch
+import torch.nn as nn
+from torch.utils.data import DataLoader
+import torch.optim as optim
 
 class FaceNet:
     """
@@ -17,11 +20,12 @@ class FaceNet:
         Args:
             embedding_size (int) : desired embedding size, defaults to 256
         """
-        self.model = InceptionResnetV1(pretrained='vggface2').eval()
-        self.model.classify = False
-        
         self.embedding_size: int = embedding_size
-        self.fc = torch.nn.Linear(512, embedding_size)
+        self.model = InceptionResnetV1(pretrained='vggface2').eval()
+        n_features = self.model.last_linear.in_features
+        self.model.last_linear = nn.Linear(n_features, self.embedding_size)
+        self.model.classify = False
+        #self.fc = torch.nn.Linear(512, embedding_size)
     
     def forward(self, x: torch.Tensor):
         """
@@ -34,7 +38,7 @@ class FaceNet:
             x (torch.Tensor) : output tensor (embedding)
         """
         x = self.model(x)
-        x = self.fc(x)
+        #x = self.fc(x)
         return x
     
     def preprocess(self, images: torch.Tensor):
@@ -91,3 +95,46 @@ class FaceNet:
         facenet.model.eval()
         facenet.model.classify = False
         return facenet
+    
+    def train(self, train_data, batch_size : int, n_epochs : int, learning_rate : float):
+        """
+        Trains a model on given data
+
+        Args: 
+            train_data () : Data to train the model on (anchor, positive, negative)
+            batch_size (int)
+            n_epochs (int)
+            learning_rate (float)
+
+        Returns:
+            None
+
+        """
+        train_loader = DataLoader(train_data, batch_size=batch_size, shuffle=True)
+
+        criterion = nn.TripletMarginLoss()
+        optimizer = optim.Adam(self.model.parameters(), lr=learning_rate)
+
+        self.model.train()
+
+        for epoch in range(n_epochs):
+            running_loss = 0.0
+            for batch in train_loader:
+                optimizer.zero_grad()
+
+                anchor_images, positive_images, negative_images = batch
+                anchor_embeddings = self.model(anchor_images)
+                positive_embeddings = self.model(positive_images)
+                negative_embeddings = self.model(negative_images)
+
+                loss = criterion(anchor_embeddings, positive_embeddings, negative_embeddings)
+
+                loss.backward()
+                optimizer.step()
+
+                running_loss += loss.item()
+
+            epoch_loss = running_loss / len(train_loader)
+            print(f"Epoch [{epoch+1}/{n_epochs}], Loss: {epoch_loss}")
+
+        self.model.eval()
