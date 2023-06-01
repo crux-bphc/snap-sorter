@@ -31,8 +31,8 @@ def write_datapoints(src_path: str, dest_path: str):
         dest_path (str): path of .pkl file to write datapoints into
     '''
     points = []
+    ep = EmbeddingPipeline()
     if os.path.isfile(src_path):
-        ep = EmbeddingPipeline()
         embs = ep(src_path)
         if embs is not None:
             for emb in embs:
