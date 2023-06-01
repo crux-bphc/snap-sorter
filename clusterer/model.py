@@ -6,8 +6,8 @@ class FaceNet:
     Class that defines a model to generate embeddings
 
     Attributes:
-    model: InceptionResnetV1 
-    embedding_size: int - desired size of output embedding
+    model (InceptionResnetV1) : model used to generate embeddings
+    embedding_size (int) : desired size of output embedding
     fc - output layer that connects the model output layer to desired embedding size
     """
     def __init__(self, embedding_size: int=256):
@@ -15,7 +15,7 @@ class FaceNet:
         Initializes the instance
 
         Args:
-            embedding_size: int - desired embedding size, defaults to 256
+            embedding_size (int) : desired embedding size, defaults to 256
         """
         self.model = InceptionResnetV1(pretrained='vggface2').eval()
         self.model.classify = False
@@ -28,10 +28,10 @@ class FaceNet:
         Initiates a forward pass of the inputs through the model and final output layer
 
         Args:
-            x: torch.Tensor - input tensor
+            x (torch.Tensor) : input tensor
 
         Returns:
-            x: torch.Tensor - output tensor (embedding)
+            x (torch.Tensor) : output tensor (embedding)
         """
         x = self.model(x)
         x = self.fc(x)
@@ -42,10 +42,10 @@ class FaceNet:
         Normalizes and permutes the images to (batch size, channels, image width, image height)
 
         Args:
-            images: torch.Tensor - tensor of image tensors
+            images (torch.Tensor) : tensor of image tensors
 
         Returns:
-            images: torch.Tensor - tensor of normalized image tensors
+            images (torch.Tensor) : tensor of normalized image tensors
         """
         images = (images - 127.5) / 128.0 
         #images = images.permute(0, 3, 1, 2) 
@@ -56,10 +56,10 @@ class FaceNet:
         Generates embeddings for a given batch of images
 
         Args:
-            images: torch.Tensor - tensor of input image tensors
+            images (torch.Tensor) : tensor of input image tensors
 
         Returns:
-            embeddings: numpy.ndarray - numpy array of embeddings
+            embeddings (np.ndarray) : numpy array of embeddings
         """
         images = self.preprocess(images)
         embeddings: torch.Tensor = self.forward(images)
@@ -70,7 +70,7 @@ class FaceNet:
         Saves model state to specified file
 
         Args:
-            filepath: str - file to save model state to
+            filepath (str) : file to save model state to
         """
         torch.save(self.model.state_dict(), filepath)
 
@@ -80,11 +80,11 @@ class FaceNet:
         Loads a facenet model from specified file
 
         Args: 
-            filepath: str - file to load model state from
-            embedding_size: int - size of output embeddings
+            filepath (str) : file to load model state from
+            embedding_size (int) : size of output embeddings
         
         Returns:
-            facenet: Self@Facenet
+            facenet (Self@Facenet)
         """
         facenet = cls(embedding_size=embedding_size)
         facenet.model.load_state_dict(torch.load(filepath))
