@@ -1,4 +1,3 @@
-from typing import Any
 from inference import EmbeddingPipeline
 import datapoint_clusterer as cl
 import os
