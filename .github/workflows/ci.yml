@@ -1,0 +1,27 @@
+name: Frontend CI
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+jobs:
+  ci:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: frontend
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: latest
+      - name: Install pnpm
+        run: npm install -g pnpm
+      - name: install
+        run: pnpm install --frozen-lockfile
+      - name: format
+        run: pnpm format
+      - name: lint
+        run: pnpm lint
+      - name: test
+        run: pnpm test:unit
