@@ -38,6 +38,7 @@
 	"type": "module",
 	"dependencies": {
 		"@lucia-auth/oauth": "^1.1.1",
+		"clsx": "^1.2.1",
 		"lucia-auth": "^1.7.1"
 	}
 }
