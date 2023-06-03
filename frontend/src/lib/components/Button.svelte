@@ -11,13 +11,13 @@
 	};
 
 	export let type: 'button' | 'submit' | 'reset' = 'button';
-	export let padding: string = 'px-4 py-2';
-	export let margin: string = 'mx-1 my-1';
+	export let padding = 'px-4 py-2';
+	export let margin = 'mx-1 my-1';
 	export let color: keyof typeof colorVariants = 'primary';
 
 	// Additional classes if needed.
-	// Need to be careful when using as the outcome may not be what one wants because of the way precendence in tailwind works
-	export let classes: string = '';
+	// Need to be careful when using as the outcome may not be what one wants because of the way precedence in tailwind works
+	export let classes = '';
 </script>
 
 <button
