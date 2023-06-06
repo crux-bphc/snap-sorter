@@ -19,7 +19,11 @@ jobs:
         run: npm install -g pnpm
       - name: install
         run: pnpm install --frozen-lockfile
+      - name: check
+        run: pnpm check --fail-on-warnings
       - name: lint
         run: pnpm lint
       - name: test
         run: pnpm test:unit
+      - name: build
+        run: pnpm build
