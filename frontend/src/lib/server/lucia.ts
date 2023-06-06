@@ -2,7 +2,8 @@ import { pg } from '@lucia-auth/adapter-postgresql';
 import lucia from 'lucia-auth';
 import { sveltekit } from 'lucia-auth/middleware';
 import { google } from '@lucia-auth/oauth/providers';
-import { Pool } from 'pg';
+import pkg from 'pg';
+const { Pool } = pkg;
 import { dev } from '$app/environment';
 import { env } from '$env/dynamic/private';
 
