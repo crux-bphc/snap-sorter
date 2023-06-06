@@ -1,6 +1,6 @@
-import { redirect, type Actions, fail } from '@sveltejs/kit';
+import { redirect, fail } from '@sveltejs/kit';
 import { auth } from '$lib/server/lucia';
-import type { PageServerLoad } from './$types';
+import type { PageServerLoad, Actions } from './$types';
 
 export const load: PageServerLoad = async ({ locals }) => {
 	const { user } = await locals.auth.validateUser();
