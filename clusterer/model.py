@@ -3,6 +3,8 @@ import torch
 import torch.nn as nn
 from torch.utils.data import DataLoader, Dataset
 import torch.optim as optim
+from triplet_dataset import TripletDataset
+import time
 
 class FaceNet:
     """
@@ -14,21 +16,22 @@ class FaceNet:
     self.n_features (int) : number of input features of the last linear layer
     self.n_bn_features (int) : number of input features of last batch normalization layer
     """
-    def __init__(self, embedding_size: int=256):
+    def __init__(self, embedding_size: int=256, use_default: bool=False):
         """
         Initializes the instance
 
         Args:
             embedding_size (int) : desired embedding size, defaults to 256
+            use_default (bool) : allows user to use unaltered model, defaults to False
         """
         self.embedding_size: int = embedding_size
         self.model = InceptionResnetV1(pretrained='vggface2').eval()
-        self.n_features = self.model.last_linear.in_features
-        self.model.last_linear = nn.Linear(self.n_features, self.embedding_size)
-        self.n_bn_features = self.model.last_bn.num_features
-        self.model.last_bn = nn.BatchNorm1d(embedding_size)
+        if not use_default:
+            self.n_features = self.model.last_linear.in_features
+            self.model.last_linear = nn.Linear(self.n_features, self.embedding_size)
+            self.n_bn_features = self.model.last_bn.num_features
+            self.model.last_bn = nn.BatchNorm1d(embedding_size)
         self.model.classify = False
-        #self.fc = torch.nn.Linear(512, embedding_size)
     
     def forward(self, x: torch.Tensor):
         """
@@ -99,7 +102,7 @@ class FaceNet:
         facenet.model.classify = False
         return facenet
     
-    def train(self, train_data: Dataset, batch_size : int, n_epochs : int, learning_rate : float):
+    def train(self, train_data: TripletDataset, batch_size : int, n_epochs : int, learning_rate : float):
         """
         Trains a model on given data
 
@@ -119,8 +122,12 @@ class FaceNet:
         optimizer = optim.Adam(self.model.parameters(), lr=learning_rate)
 
         self.model.train()
+        start = time.time()
+
+        print(f"Training starts: {time.ctime(start)}\n")
 
         for epoch in range(n_epochs):
+            epoch_start = time.time()
             running_loss = 0.0
             for batch in train_loader:
                 optimizer.zero_grad()
@@ -138,6 +145,10 @@ class FaceNet:
                 running_loss += loss.item()
 
             epoch_loss = running_loss / len(train_loader)
-            print(f"Epoch [{epoch+1}/{n_epochs}], Loss: {epoch_loss}")
+            print(f"Epoch [{epoch+1}/{n_epochs}], Loss: {epoch_loss} | " \
+                  f"{(time.time()-epoch_start):.2f}s | {time.ctime(time.time())}")
 
         self.model.eval()
+
+        print(f"Training ends: {time.ctime(time.time())}")
+        print(f"Time taken: {(time.time()-start):.2f}s")
