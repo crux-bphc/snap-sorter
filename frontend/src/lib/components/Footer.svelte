@@ -3,13 +3,15 @@
 	import facebookIcon from '@iconify/icons-mdi/facebook';
 	import googleGmail from '@iconify/icons-mdi/gmail';
 	import githubIcon from '@iconify/icons-mdi/github';
+	import { fade } from 'svelte/transition';
 </script>
 
 <footer
-	class="container mx-auto flex items-center justify-between bg-primary-200 px-5 py-3 shadow-lg"
+	class="fixed bottom-0 flex w-screen items-center justify-between bg-primary-200 px-5 py-3 text-primary-700 shadow-lg"
+	transition:fade
 >
-	<p class="text-5xl font-bold text-primary-600">cruX</p>
-	<ul class="grid list-none grid-cols-1 items-center font-semibold text-primary-600 sm:flex">
+	<p class="text-5xl font-bold">cruX</p>
+	<ul class="grid list-none grid-cols-1 items-center font-semibold sm:flex">
 		<li class="mx-2 hover:text-primary-900">
 			<a href="https://www.github.com/crux-bphc" rel="external" target="_blank">
 				<Icon icon={githubIcon} width="35" />

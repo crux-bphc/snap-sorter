@@ -1,9 +1,14 @@
 <script lang="ts">
 	import Footer from '$lib/components/Footer.svelte';
+	import { onMount } from 'svelte';
 	import '../app.css';
+
+	// For the fade transition when the page loads
+	let loaded = false;
+	onMount(() => (loaded = true));
 </script>
 
 <slot />
-
-<!-- TODO: Position footer in the right place -->
-<Footer />
+{#if loaded}
+	<Footer />
+{/if}
