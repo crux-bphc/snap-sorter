@@ -5,10 +5,23 @@ services:
     build:
       context: ./frontend
       dockerfile: prod.Dockerfile
-    environment:
-      NODE_ENV: production
+    depends_on:
+      - db
+    env_file:
+      - ./frontend/.env.production
     ports:
-      - 8080:8080
+      - 80:3000
     volumes:
       - ./frontend/src:/app/src
     image: snap-sorter-frontend-prod
+  db:
+    image: postgres:latest
+    container_name: snap-sorter-database-prod
+    restart: always
+    env_file:
+      - ./frontend/.env.production
+    volumes:
+      - data:/var/lib/postgresql/data
+      - ./scripts/:/docker-entrypoint-initdb.d
+volumes:
+  data:

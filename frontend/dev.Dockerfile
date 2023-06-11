@@ -8,4 +8,5 @@ COPY --chown=node:node tsconfig.json .
 COPY --chown=node:node src ./src
 COPY --chown=node:node static ./static
 COPY --chown=node:node .npmrc .npmrc
+COPY --chown=node:node .env.development .env.development
 CMD ["pnpm","dev","--host"]

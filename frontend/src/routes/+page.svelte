@@ -1,2 +1,14 @@
-<h1 class="p-4 pt-2 text-3xl font-bold text-blue-500 underline">Welcome to SvelteKit</h1>
-<p>Visit <a href="https://kit.svelte.dev">kit.svelte.dev</a> to read the documentation</p>
+<script lang="ts">
+	import { enhance } from '$app/forms';
+	import type { PageData } from './$types';
+	import Button from '$lib/components/Button.svelte';
+	export let data: PageData;
+</script>
+
+<h1>Profile</h1>
+<h2>User id: {data.user.userId}</h2>
+<h2>Email: {data.user.email}</h2>
+
+<form use:enhance method="post">
+	<Button type="submit" color="primary">Logout</Button>
+</form>

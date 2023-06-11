@@ -12,6 +12,8 @@ pnpm dev
 
 ### Using docker
 
+- Rename `.env` to `.env.development` or to `.env.production` as per the context and change the values accordingly.
+
 ```bash
 # To start
 # Replace dev with prod to run prod
