@@ -5,5 +5,6 @@ module.exports = {
 	printWidth: 100,
 	pluginSearchDirs: ['.'],
 	overrides: [{ files: '*.svelte', options: { parser: 'svelte' } }],
-	plugins: [require('prettier-plugin-svelte'), require('prettier-plugin-tailwindcss')]
+	plugins: [require('prettier-plugin-svelte'), require('prettier-plugin-tailwindcss')],
+	tailwindFunctions: ['clsx']
 };
