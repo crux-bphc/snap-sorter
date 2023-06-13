@@ -33,6 +33,7 @@ class Cluster:
     Attributes:
         id (int) : unique ID of the cluster as set by the clustering 
                       algorithm
+        datapoints (list[Datapoint]) : datapoints present in the cluster
         paths (list[str]) : list of paths to images containing datapoints
         mean_encoding (list[float]) : mean encoding of the faces grouped under the cluster
         std_dev (list[float]): standard deviation of the individual encodings detected as 
@@ -50,6 +51,7 @@ class Cluster:
             id (int) : Label ID associated with the cluster
         """
         self.id = id
+        self.datapoints = []
         self.paths = []
         self.mean_encoding = []
         self.std_dev = []
@@ -103,6 +105,7 @@ def create_clusters(_datapoints: list[Datapoint], _epsilon:float, _min_samples:i
             point.label= labelid 
             paths.append(point.path) 
             encodings.append(point.data.numpy()) 
+            id_cluster.datapoints.append(point)
         id_cluster.add_paths(paths) 
         id_cluster.mean_encoding = np.mean(np.asarray(encodings), axis=0) 
         id_cluster.std_dev = np.std(encodings, axis=0)
