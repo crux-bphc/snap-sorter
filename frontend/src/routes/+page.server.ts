@@ -4,10 +4,11 @@ import type { PageServerLoad, Actions } from './$types';
 
 export const load: PageServerLoad = async ({ locals }) => {
 	const { user } = await locals.auth.validateUser();
-	if (!user) throw redirect(302, '/login');
-	return {
-		user
-	};
+	if (user && user.email.endsWith('@hyderabad.bits-pilani.ac.in')) {
+		return { user };
+	} else {
+		throw redirect(302, '/login');
+	}
 };
 
 export const actions: Actions = {
