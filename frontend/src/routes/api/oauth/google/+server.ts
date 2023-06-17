@@ -4,11 +4,11 @@ import { redirect } from '@sveltejs/kit';
 import type { RequestHandler } from './$types';
 
 export const GET: RequestHandler = async ({ cookies, url, locals }) => {
-	const code = url.searchParams.get('code') || '';
+	const code = url.searchParams.get('code');
 	const state = url.searchParams.get('state');
 	const storedState = cookies.get('google_oauth_state');
 
-	if (!state || !storedState || state !== storedState) {
+	if (!code || !state || !storedState || state !== storedState) {
 		throw new Response(null, { status: 401 });
 	}
 
@@ -35,5 +35,5 @@ export const GET: RequestHandler = async ({ cookies, url, locals }) => {
 		});
 	}
 
-	throw redirect(302, '/');
+	throw redirect(302, '/profile');
 };
