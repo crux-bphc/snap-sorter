@@ -20,7 +20,8 @@ export const GET: RequestHandler = async ({ cookies, url, locals }) => {
 			if (!providerUser.email)
 				throw Error(`Provider user email is invalid, email: ${providerUser.email}`);
 			return await createUser({
-				email: providerUser.email
+				email: providerUser.email,
+				name: providerUser.name
 			});
 		};
 

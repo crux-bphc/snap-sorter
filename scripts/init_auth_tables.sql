@@ -1,6 +1,7 @@
 CREATE TABLE auth_user (
     id TEXT PRIMARY KEY,
-    email TEXT UNIQUE NOT NULL
+    email TEXT UNIQUE NOT NULL,
+    name TEXT NOT NULL
 );
 CREATE TABLE auth_session (
     id TEXT PRIMARY KEY,
