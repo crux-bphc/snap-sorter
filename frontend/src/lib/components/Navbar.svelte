@@ -14,7 +14,7 @@
 		<Button type="button" color="purple">
 			<a href="/search"> image search </a>
 		</Button>
-		<form use:enhance method="post" class="flex">
+		<form use:enhance method="post" action="/profile?/logout" class="flex">
 			<Button type="submit" color="error">Logout</Button>
 		</form>
 	</nav>
