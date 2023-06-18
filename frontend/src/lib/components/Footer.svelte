@@ -7,7 +7,7 @@
 </script>
 
 <footer
-	class="flex w-screen items-center justify-between bg-primary-200 px-5 py-3 text-primary-700 shadow-lg"
+	class="max-w-screen flex items-center justify-between bg-primary-200 px-5 py-3 text-primary-700 shadow-lg"
 	transition:fade
 >
 	<p class="text-5xl font-bold">cruX</p>

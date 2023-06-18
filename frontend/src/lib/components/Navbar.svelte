@@ -10,7 +10,7 @@
 </script>
 
 {#if mounted}
-	<nav class=" flex w-screen flex-wrap justify-center md:justify-end" transition:fade>
+	<nav class=" max-w-screen flex flex-wrap justify-center md:justify-end" transition:fade>
 		<!-- TODO: Add a toggle for color scheme -->
 		<!-- TODO: search route page-->
 		{#if $page.data.user !== null}

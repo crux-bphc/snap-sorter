@@ -10,7 +10,7 @@
 </script>
 
 {#if loaded}
-	<div class="flex h-screen flex-col">
+	<div class="flex min-h-screen flex-col">
 		<Navbar />
 		<slot />
 		<Footer />
