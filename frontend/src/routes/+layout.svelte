@@ -10,7 +10,9 @@
 </script>
 
 {#if loaded}
-	<Navbar />
-	<slot />
-	<Footer />
+	<div class="flex h-screen flex-col">
+		<Navbar />
+		<slot />
+		<Footer />
+	</div>
 {/if}

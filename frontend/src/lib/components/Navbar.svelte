@@ -8,7 +8,7 @@
 </script>
 
 {#if mounted}
-	<nav class="fixed top-0 flex w-screen flex-wrap justify-center md:justify-end" transition:fade>
+	<nav class=" flex w-screen flex-wrap justify-center md:justify-end" transition:fade>
 		<!-- TODO: Add a toggle for color scheme -->
 		<!-- TODO: search route page-->
 		<Button type="button" color="purple">
