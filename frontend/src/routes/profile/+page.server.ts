@@ -1,15 +1,6 @@
-import { redirect, fail } from '@sveltejs/kit';
+import { fail } from '@sveltejs/kit';
 import { auth } from '$lib/server/lucia';
-import type { PageServerLoad, Actions } from '../$types';
-
-export const load: PageServerLoad = async ({ locals }) => {
-	const { user } = await locals.auth.validateUser();
-	if (user && user.email.endsWith('@hyderabad.bits-pilani.ac.in')) {
-		return { user };
-	} else {
-		throw redirect(302, '/login');
-	}
-};
+import type { Actions } from '../$types';
 
 export const actions: Actions = {
 	logout: async ({ locals }) => {
