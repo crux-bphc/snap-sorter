@@ -4,6 +4,7 @@ import numpy as np
 import os
 import torch
 import pickle
+from exception import FaceNotFoundError
 
 def cluster_from_file(source_path: str, dest_path: str, epsilon: float):
     '''
@@ -35,6 +36,7 @@ def write_datapoints(source_path: str, dest_path: str):
     '''
     points = []
     pipeline = EmbeddingPipeline()
+    
     if os.path.isfile(source_path):
         embeddings = pipeline(source_path)
         if embeddings is not None:
@@ -42,6 +44,9 @@ def write_datapoints(source_path: str, dest_path: str):
                 embedding = torch.from_numpy(embedding)
                 point = clusterer.Datapoint(embedding, None, source_path)
                 points.append(point)
+        else:
+            raise FaceNotFoundError(source_path)
+        
     else:
         for root, _, filenames in os.walk(source_path):
             for filename in filenames:
@@ -52,6 +57,9 @@ def write_datapoints(source_path: str, dest_path: str):
                         embedding = torch.from_numpy(embedding)
                         point = clusterer.Datapoint(embedding, None, imgpath)
                         points.append(point)
+                else:
+                    raise FaceNotFoundError(imgpath)
+                
     with open(dest_path, 'wb') as f:
         pickle.dump(points, f, protocol=pickle.HIGHEST_PROTOCOL)
     print("Written succesfully!")
@@ -78,8 +86,12 @@ def get_cluster_ids(clusters: list[clusterer.Cluster], image_path: str):
             distances = [np.linalg.norm(embeddings[i] - cluster.mean_encoding) for cluster in clusters]
             min_dist_idx = np.argmin(distances)
             cluster_ids[i] = lookup[min_dist_idx]
+            
+        return cluster_ids
     
-    return cluster_ids
+    else:
+        raise FaceNotFoundError(image_path)
+    
             
         
     
