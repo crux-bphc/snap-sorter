@@ -2,6 +2,7 @@ from PIL import Image
 import torch
 from facenet_pytorch import MTCNN, InceptionResnetV1
 import numpy as np
+from exception import FaceNotFoundError
 
 class EmbeddingPipeline:
     """
@@ -57,20 +58,24 @@ class EmbeddingPipeline:
         
         detected_faces = self.detector(img)
         
-        embeddings = self._create_embeddings(detected_faces)
+        embeddings = self._create_embeddings(detected_faces, filepath)
         
         return embeddings  
     
-    def _create_embeddings(self, faces: list[torch.tensor]):
+    def _create_embeddings(self, faces: list[torch.tensor], filepath: str):
         """
             Converts array of faces to embedding vectors
             
             Args:
                 faces (list[torch.tensor]): list of tensors of detected faces 
+                filepath (str): path of image
             
             Returns:
                 numpy array of embedding vectors of size {torch.Size([1, 512])}
 
         """
-        embeddings = np.array([self.resnet(torch.unsqueeze(face, 0)).detach().numpy() for face in faces])
-        return embeddings
+        if faces is not None:
+            embeddings = np.array([self.resnet(torch.unsqueeze(face, 0)).detach().numpy() for face in faces])
+            return embeddings
+        else:
+            raise FaceNotFoundError(filepath)

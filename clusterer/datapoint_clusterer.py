@@ -149,3 +149,24 @@ def read_datapoints(_filename: str):
             print(f"Read failed: {e}")
             pass
     return datapoints
+
+def read_clusters(_filename: str):
+    """
+    Reads clusters from a specified .pkl file
+
+    Args:
+        _filename (str) : name of the file clusters are to be read from
+
+    Returns:
+        list[Cluster]
+    """
+    clusters = None
+    filename = _filename
+    with open(filename, 'rb') as f:
+        try:
+            clusters = pickle.load(file=f)
+            print("Read!!")
+        except Exception as e:
+            print(f"Read failed: {e}")
+            pass
+    return clusters
