@@ -1,4 +1,6 @@
 from inference import EmbeddingPipeline
+from sklearn.cluster import DBSCAN
+from sklearn.preprocessing import StandardScaler
 import datapoint_clusterer as clusterer
 import os
 import torch
@@ -6,12 +8,12 @@ import pickle
 
 def cluster_from_file(source_path: str, dest_path: str, epsilon: float):
     '''
-    creates clusters from datapoints stored in src_path and writes them to dest_path
-    
+    creates clusters from datapoints stored in source_path and writes them to dest_path
+
     Args:
-        src_path (str): path of .pkl file which stores datapoints
+        source_path (str): path of .pkl file which stores datapoints
         dest_path (str): path of .pkl to which clusters are written
-        eps (float): epsilon parameter of DBSCAN algorithm
+        epsilon (float): epsilon parameter of DBSCAN algorithm
     
     Returns: 
         None
@@ -26,7 +28,7 @@ def write_datapoints(source_path: str, dest_path: str):
     reads images from file or folder, creates datapoints and writes them into .pkl file
     
     Args:
-        src_path (str): path of file or folder containing images
+        source_path (str): path of file or folder containing images
         dest_path (str): path of .pkl file to write datapoints into
     
     Returns:
@@ -55,4 +57,8 @@ def write_datapoints(source_path: str, dest_path: str):
         pickle.dump(points, f, protocol=pickle.HIGHEST_PROTOCOL)
     print("Written succesfully!")
     return None
-
+        
+    
+        
+            
+            
