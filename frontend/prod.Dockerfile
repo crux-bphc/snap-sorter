@@ -11,6 +11,7 @@ COPY  *.config.js .
 COPY  *.config.ts .
 COPY  tsconfig.json .
 COPY tsconfig.json .
+COPY .env.production .
 RUN pnpm build
 
 FROM base AS runner
