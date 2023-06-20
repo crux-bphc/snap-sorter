@@ -42,7 +42,7 @@
 		<Dropzone on:drop={handleFilesSelect} accept={['image/*']} inputElement={null} />
 		<ol class="mt-2">
 			{#each files.rejected as item}
-				<li class="text-error-500 text-sm font-semibold">
+				<li class="text-sm font-semibold text-error-500">
 					{item.file.name} has unsupported file format
 				</li>
 			{/each}
