@@ -13,15 +13,17 @@ services:
       - 5173:5173
     volumes:
       - ./frontend/src:/app/src
+      - ./frontend/prisma:/app/prisma
     image: snap-sorter-frontend-dev
   db:
     image: postgres:latest
+    ports:
+      - 5432:5432
     container_name: snap-sorter-database-dev
     restart: always
     env_file:
       - ./frontend/.env.development
     volumes:
       - data:/var/lib/postgresql/data
-      - ./scripts/:/docker-entrypoint-initdb.d
 volumes:
   data:

@@ -1,18 +1,13 @@
-import { pg } from '@lucia-auth/adapter-postgresql';
 import lucia from 'lucia-auth';
 import { sveltekit } from 'lucia-auth/middleware';
 import { google } from '@lucia-auth/oauth/providers';
-import pkg from 'pg';
-const { Pool } = pkg;
 import { dev } from '$app/environment';
 import { env } from '$env/dynamic/private';
-
-const pool = new Pool({
-	connectionString: env.DATABASE_URL
-});
+import prisma from '@lucia-auth/adapter-prisma';
+import prismaClient from '$lib/prisma/client';
 
 export const auth = lucia({
-	adapter: pg(pool),
+	adapter: prisma(prismaClient),
 	env: dev ? 'DEV' : 'PROD',
 	middleware: sveltekit(),
 	transformDatabaseUser: (userData) => {

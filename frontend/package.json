@@ -38,7 +38,9 @@
 	"type": "module",
 	"dependencies": {
 		"@lucia-auth/adapter-postgresql": "^1.0.1",
+		"@lucia-auth/adapter-prisma": "^2.0.0",
 		"@lucia-auth/oauth": "^1.1.1",
+		"@prisma/client": "^4.15.0",
 		"clsx": "^1.2.1",
 		"lucia-auth": "^1.7.1",
 		"pg": "^8.11.0",

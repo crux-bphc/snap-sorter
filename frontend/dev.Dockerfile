@@ -8,5 +8,7 @@ COPY --chown=node:node tsconfig.json .
 COPY --chown=node:node src ./src
 COPY --chown=node:node static ./static
 COPY --chown=node:node .npmrc .npmrc
-COPY --chown=node:node .env.development .env.development
+COPY --chown=node:node prisma prisma
+COPY --chown=node:node .env.development .env
+RUN pnpx prisma generate
 CMD ["pnpm","dev","--host"]
