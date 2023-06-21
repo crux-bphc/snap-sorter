@@ -1,3 +1,4 @@
+# TODO: Update this to according to the latest decisions
 FROM node:lts-alpine as base
 
 FROM base AS build
