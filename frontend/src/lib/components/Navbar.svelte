@@ -13,7 +13,7 @@
 	<nav class=" max-w-screen flex flex-wrap justify-center md:justify-end" transition:fade>
 		<!-- TODO: Add a toggle for color scheme -->
 		<!-- TODO: search route page-->
-		{#if $page.data.user !== null}
+		{#if $page.data.user}
 			<Button type="button" color="purple">
 				<a href="/search"> image search </a>
 			</Button>

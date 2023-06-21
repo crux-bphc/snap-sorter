@@ -1,6 +1,5 @@
 import { auth, googleAuth } from '$lib/server/lucia';
-import { redirect } from '@sveltejs/kit';
-import type { RequestHandler } from './$types';
+import { redirect, type RequestHandler } from '@sveltejs/kit';
 
 export const GET: RequestHandler = async ({ cookies, url, locals }) => {
 	const code = url.searchParams.get('code');

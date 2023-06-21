@@ -1,6 +1,10 @@
-import { fail } from '@sveltejs/kit';
+import { fail, redirect } from '@sveltejs/kit';
 import { auth } from '$lib/server/lucia';
-import type { Actions } from '../$types';
+import type { Actions, PageServerLoad } from '../$types';
+
+export const load: PageServerLoad = async ({ locals }) => {
+	return { user: locals.user };
+};
 
 export const actions: Actions = {
 	logout: async ({ locals }) => {
