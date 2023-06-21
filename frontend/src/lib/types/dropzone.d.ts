@@ -17,8 +17,15 @@ export interface FileRejection {
 
 export type DropEvent = (DragEvent | Event) & {
 	detail: {
-		acceptedFiles: File[];
+		acceptedFiles: ImageFile[];
 		fileRejections: FileRejection[];
 		event: Event;
 	};
 };
+
+export interface ImageFile extends File {
+	id: string;
+	src?: string;
+	width?: number;
+	height?: number;
+}
