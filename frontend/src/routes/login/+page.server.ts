@@ -3,5 +3,5 @@ import type { PageServerLoad } from './$types';
 
 export const load: PageServerLoad = async ({ locals }) => {
 	const { user } = await locals.auth.validateUser();
-	if (user?.email.endsWith('@hyderabad.bits-pilani.ac.in')) throw redirect(302, '/profile');
+	if (user) throw redirect(302, '/profile');
 };

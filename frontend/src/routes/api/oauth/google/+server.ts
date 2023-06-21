@@ -1,6 +1,5 @@
 import { auth, googleAuth } from '$lib/server/lucia';
 import { redirect } from '@sveltejs/kit';
-
 import type { RequestHandler } from './$types';
 
 export const GET: RequestHandler = async ({ cookies, url, locals }) => {
@@ -9,31 +8,25 @@ export const GET: RequestHandler = async ({ cookies, url, locals }) => {
 	const storedState = cookies.get('google_oauth_state');
 
 	if (!code || !state || !storedState || state !== storedState) {
-		throw new Response(null, { status: 401 });
+		throw Error('Invalid auth state');
 	}
 
-	try {
-		const { existingUser, providerUser, createUser } = await googleAuth.validateCallback(code);
+	const { existingUser, providerUser, createUser } = await googleAuth.validateCallback(code);
 
-		const getUser = async () => {
-			if (existingUser) return existingUser;
-			if (!providerUser.email)
-				throw Error(`Provider user email is invalid, email: ${providerUser.email}`);
-			return await createUser({
-				email: providerUser.email,
-				name: providerUser.name
-			});
-		};
-
-		const user = await getUser();
-		const session = await auth.createSession(user.userId);
-		locals.auth.setSession(session);
-	} catch (e) {
-		console.error(e);
-		return new Response(null, {
-			status: 500
+	let user;
+	if (existingUser) {
+		user = existingUser;
+	} else if (providerUser.email?.endsWith('@hyderabad.bits-pilani.ac.in')) {
+		user = await createUser({
+			email: providerUser.email,
+			name: providerUser.name
 		});
+	} else {
+		console.error(`Invalid provider user email ${providerUser.email}`);
+		throw redirect(302, '/login');
 	}
 
+	const session = await auth.createSession(user.userId);
+	locals.auth.setSession(session);
 	throw redirect(302, '/profile');
 };
