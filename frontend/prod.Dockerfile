@@ -13,6 +13,8 @@ COPY  *.config.ts .
 COPY  tsconfig.json .
 COPY tsconfig.json .
 COPY .env.production .
+COPY prisma ./prisma
+RUN pnpx prisma generate
 RUN pnpm build
 
 FROM base AS runner
