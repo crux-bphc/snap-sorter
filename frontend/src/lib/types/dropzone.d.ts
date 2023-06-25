@@ -25,7 +25,7 @@ export type DropEvent = (DragEvent | Event) & {
 
 export interface ImageFile extends File {
 	id: string;
-	src?: string;
+	src: string;
 	width?: number;
 	height?: number;
 }

@@ -1,11 +1,12 @@
 <script lang="ts">
-	import { applyAction, deserialize, enhance } from '$app/forms';
-	import Dropzone from 'svelte-file-dropzone/Dropzone.svelte';
-	import Button from '$lib/components/Button.svelte';
+	import { applyAction, deserialize } from '$app/forms';
 	import type { DropEvent, FileRejection, ImageFile } from '$lib/types/dropzone';
 	import type { ActionData, PageData } from './$types';
 	import type { ActionResult } from '@sveltejs/kit';
 	import { invalidateAll } from '$app/navigation';
+	import Dropzone from 'svelte-file-dropzone/Dropzone.svelte';
+	import Button from '$lib/components/Button.svelte';
+	import UploadThumbnail from '$lib/components/UploadThumbnail.svelte';
 
 	export let data: PageData;
 	export let form: ActionData;
@@ -69,14 +70,16 @@
 			.then((arr) => {
 				images.forEach((file, i) => {
 					file.src = arr[i].src;
-					file.width = arr[i].width;
-					file.height = arr[i].height;
 				});
 				images = images;
 			})
 			.catch((err) => {
 				console.error(err.message);
 			});
+	}
+
+	function removeImage(id: string) {
+		images = images.filter((image) => image.id !== id);
 	}
 </script>
 
@@ -113,18 +116,8 @@
 			<div
 				class="mb-4 grid grid-cols-2 place-items-stretch gap-4 bg-primary-50 sm:grid-cols-3 md:grid-cols-4"
 			>
-				{#each images as { src, height, width, name, size }}
-					<div
-						class="flex w-52 flex-col items-center justify-center gap-2 bg-purple-50 p-2"
-						on:mouseenter={() => {
-							// TODO: Add delete button/icon for each image
-						}}
-					>
-						<img alt={name} {src} class="max-h-48" />
-						<p class="text-center text-sm font-semibold text-purple-500">
-							{name} ({(size / 1000000).toFixed(2)} MB)
-						</p>
-					</div>
+				{#each images as { src, name, size, id }}
+					<UploadThumbnail {id} {name} {src} {size} {removeImage} />
 				{/each}
 			</div>
 		{/if}
