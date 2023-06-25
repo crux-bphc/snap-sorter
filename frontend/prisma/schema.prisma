@@ -13,6 +13,7 @@ model AuthUser {
   auth_key     AuthKey[]
   email        String
   name         String
+  images       Image[]
 
   @@map("auth_user")
 }
@@ -38,4 +39,12 @@ model AuthKey {
 
   @@index([user_id])
   @@map("auth_key")
+}
+
+model Image {
+  id      String   @id @unique
+  owner   AuthUser @relation(references: [id], fields: [ownerId], onDelete: Cascade)
+  ownerId String
+
+  @@map("images")
 }

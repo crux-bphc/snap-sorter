@@ -1,9 +1,14 @@
 <script lang="ts">
+	import { applyAction, deserialize, enhance } from '$app/forms';
 	import Dropzone from 'svelte-file-dropzone/Dropzone.svelte';
 	import Button from '$lib/components/Button.svelte';
 	import type { DropEvent, FileRejection, ImageFile } from '$lib/types/dropzone';
+	import type { ActionData, PageData } from './$types';
+	import type { ActionResult } from '@sveltejs/kit';
+	import { invalidateAll } from '$app/navigation';
 
-	export let data;
+	export let data: PageData;
+	export let form: ActionData;
 
 	let images: Array<ImageFile> = [];
 	let rejected: Array<FileRejection> = [];
@@ -23,9 +28,26 @@
 		loadPreview();
 	}
 
-	function uploadFiles() {
-		// TODO: upload images to DB
-		console.log(images);
+	async function uploadFiles(this: HTMLFormElement) {
+		let fd = new FormData();
+
+		fd.append('length', images.length.toString());
+		for (let i = 0; i < images.length; i++) {
+			fd.append(i.toString(), images[i]);
+		}
+
+		const response = await fetch(this.action, {
+			method: 'POST',
+			body: fd
+		});
+
+		const result: ActionResult = deserialize(await response.text());
+
+		if (result.type === 'success') {
+			await invalidateAll();
+		}
+
+		applyAction(result);
 	}
 
 	function readFile(file: File): Promise<HTMLImageElement> {
@@ -65,10 +87,16 @@
 		<h2>Name: {data.user.name}</h2>
 	</div>
 	<div class="mx-auto">
-		<Button type="submit" on:click={uploadFiles} color="success" size="small">Upload</Button>
-		<Button type="submit" on:click={() => (images = [])} color="error" size="small"
-			>clear selection</Button
-		>
+		<form method="POST" action="?/upload" on:submit|preventDefault={uploadFiles}>
+			<Button type="submit" color="success" size="small">Upload</Button>
+			<Button on:click={() => (images = [])} color="error" size="small">clear selection</Button>
+		</form>
+		{#if form?.error}
+			<p class="text-error-500">{form.error}</p>
+		{/if}
+		{#if form?.message}
+			<p class="text-forestGreen-500">{form.message}</p>
+		{/if}
 	</div>
 	<div>
 		<h1 class="my-3 text-xl font-semibold">Image Upload:</h1>
@@ -83,7 +111,7 @@
 		{#if images.length > 0}
 			<h2 class="mb-2 mt-4 text-lg font-semibold">Selected Images:</h2>
 			<div
-				class="mb-4 grid grid-cols-2 place-items-stretch gap-4 bg-primary-200 sm:grid-cols-3 md:grid-cols-4"
+				class="mb-4 grid grid-cols-2 place-items-stretch gap-4 bg-primary-50 sm:grid-cols-3 md:grid-cols-4"
 			>
 				{#each images as { src, height, width, name, size }}
 					<div
