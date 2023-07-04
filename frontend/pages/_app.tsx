@@ -1,13 +1,12 @@
 import { AppProps } from "next/app";
 import Head from "next/head";
 import { MantineProvider } from "@mantine/core";
+import "@/styles/globals.css";
 
 // TODO: Meta tags description, title, favicon
 // TODO: Dark mode
 // TODO: Prettier config
-export default function App(props: AppProps) {
-  const { Component, pageProps } = props;
-
+export default function App({ Component, pageProps }: AppProps) {
   return (
     <>
       <Head>
