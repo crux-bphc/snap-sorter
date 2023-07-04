@@ -26,6 +26,10 @@
     "typescript": "5.1.6"
   },
   "devDependencies": {
-    "prettier": "^2.8.8"
+    "@iconify/react": "^4.1.1",
+    "autoprefixer": "^10.4.14",
+    "postcss": "^8.4.24",
+    "prettier": "^2.8.8",
+    "tailwindcss": "^3.3.2"
   }
 }
