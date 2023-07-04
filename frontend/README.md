@@ -8,16 +8,16 @@
 
 - [ ] Navbar
   - Logo which takes to `search` page when logged in else to `login`
-  - Links to each page (profile, search, announcements)
+  - [x] Links to each page (profile, search, announcements)
 - [ ] Footer
-  - Trademark if needed
+  - Trademark if needed (to be discussed)
   - Links to socials and contact details
 - [ ] Common layout with navbar and footer
 
 #### Pages
 
-- [ ] Login page
-  - Login button which initiates the oauth flow
+- [x] Login page
+  - [x] Login button which initiates the oauth flow
 - [ ] Announcements
   - Get data from announcements endpoint and display sorted by latest
 - [ ] Profile
