@@ -1,5 +1,77 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Snap Sorter
 
+## Status
+
+### Frontend
+
+#### Components
+
+- [ ] Navbar
+  - Logo which takes to `search` page when logged in else to `login`
+  - Links to each page (profile, search, announcements)
+- [ ] Footer
+  - Trademark if needed
+  - Links to socials and contact details
+- [ ] Common layout with navbar and footer
+
+#### Pages
+
+- [ ] Login page
+  - Login button which initiates the oauth flow
+- [ ] Announcements
+  - Get data from announcements endpoint and display sorted by latest
+- [ ] Profile
+  - Dropzone from mantine to collect images
+  - Hover on image to delete the image from the list
+  - Reset btn to clear
+  - Submit btn to send them to the backend `store images` endpoint
+- [ ] Search (the most uncertain part of the code)
+  - Input field for UID
+  - Filter for year and events
+  - Similar to dropzone to show the received images
+  - [ ] Modal to change tags
+    - Badges to display the received tags
+    - Delete or add badges(tags)
+    - Save button to send the updated tags back
+
+### Backend
+
+#### Endpoints
+
+- [ ] Announcements
+  - Get announcements from DB
+- [ ] Store images
+  - Take the images and dump them in some folder called `/temp/images` as `studentuid_imagename.extension`
+  - After dumping them update the db `Upload Image` with the image and path and uid
+- [ ] Search images
+  - Frontend will send uid as param along with filters (have defaults for filters too)
+  - Return images from the `Unknown schema joined with Dopy Image` table with tags
+- [ ] Auth
+  - Nextauth will do the needful (more deep dive on what exactly is happening might be needed)
+- [ ] Update tags for a given image id
+  - Endpoint will be a `PATCH` request which takes image id and the updated tags and updates them in the db.
+
+#### Database
+
+- [ ] Prisma or Drizzle with postgresql
+- [ ] Announcement schema - {uuid, title, description, created at time stamp}
+- [ ] Upload Image - {uuid,  fk to student uid, image path}
+- [ ] Some Unknown schema to store tagged image - {fk to student uid, image id}
+- [ ] Dopy Image - {uuid, image path, event name, tags}
+
+
+### Config & Misc
+
+- [ ] Docker files
+  - [ ] Production
+  - [ ] Development
+- [ ] Config
+  - [ ] Prettier
+- [ ] Color scheme and UI
+
+
+
+<!-- TODO: Update README -->
 ## Getting Started
 
 First, run the development server:
