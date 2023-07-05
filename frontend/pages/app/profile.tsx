@@ -5,8 +5,9 @@
 // !There's no max file size limit or max number of files limit
 import BaseLayout from "@/components/layouts/BaseLayout";
 import { useState } from "react";
-import { Image, Text, Group, Button } from "@mantine/core";
+import { Image, Text, Group, Button, ActionIcon } from "@mantine/core";
 import { Dropzone, FileWithPath } from "@mantine/dropzone";
+import { Icon } from "@iconify/react";
 
 // TODO: Replace with data from OAuth
 const userData = {
@@ -26,12 +27,23 @@ export default function Profile() {
     const imageUrl = URL.createObjectURL(file);
 
     return (
-      <Image
-        key={index}
-        alt={imageUrl}
-        src={imageUrl}
-        imageProps={{ onLoad: () => URL.revokeObjectURL(imageUrl) }}
-      />
+      <div key={index} className="relative group">
+        <Image
+          alt={imageUrl}
+          src={imageUrl}
+          imageProps={{ onLoad: () => URL.revokeObjectURL(imageUrl) }}
+        />
+        <ActionIcon
+          className="absolute bottom-1 right-1 opacity-0 group-hover:opacity-100 transition-opacity duration-300 ease-in-out"
+          color="red"
+          variant="filled"
+          onClick={() => {
+            setImages((images) => images.filter((_, key) => key !== index));
+          }}
+        >
+          <Icon icon="mdi:delete" className="text-3xl" />
+        </ActionIcon>
+      </div>
     );
   });
 
