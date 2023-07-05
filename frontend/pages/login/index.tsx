@@ -1,5 +1,5 @@
 import BaseLayout from "@/components/layouts/BaseLayout";
-import { Text, Title, Button } from "@mantine/core";
+import { Button } from "@mantine/core";
 
 export default function Login() {
   return (
@@ -7,13 +7,11 @@ export default function Login() {
       <BaseLayout>
         <main>
           <div className="container mx-auto text-center">
-            <Title order={1} className="text-6xl p-4">
-              Snap Sorter
-            </Title>
-            <Button type="submit" size="lg" className="my-2">
+            <h1 className="text-6xl my-3">Snap Sorter</h1>
+            <Button type="submit" size="md" className="my-2">
               Login with Google
             </Button>
-            <Text fz="xs">Use BITS mail*</Text>
+            <p className="text-xs my-1">Use BITS mail*</p>
           </div>
         </main>
       </BaseLayout>
