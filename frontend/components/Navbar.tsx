@@ -1,3 +1,6 @@
+// Pitfalls:
+// Since tailwind preflight is disabled some of these styles overwrite the default styles or make use of the default styles
+// For example here 'px-0` is needed to remove the default unordered list padding
 import { Anchor, Button } from "@mantine/core";
 import Link from "next/link";
 
