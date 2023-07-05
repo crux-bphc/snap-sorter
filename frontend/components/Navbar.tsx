@@ -8,27 +8,27 @@ export default function Navbar() {
       <Anchor component={Link} href={"/"}>
         Logo
       </Anchor>
-      <ul className="list-none flex">
-        <li>
+      <ul className="list-none flex px-0">
+        <li className="mx-2">
           <Button
             component={Link}
             href={"/announcements"}
-            className="mx-1 capitalize"
+            className="capitalize"
           >
             announcements
           </Button>
+        </li>
+        <li className="mx-2">
           <Button
             component={Link}
             href={"/app/profile"}
-            className="mx-1 capitalize"
+            className=" capitalize"
           >
             profile
           </Button>
-          <Button
-            component={Link}
-            href={"/app/search"}
-            className="mx-1 capitalize"
-          >
+        </li>
+        <li className="mx-2">
+          <Button component={Link} href={"/app/search"} className=" capitalize">
             search
           </Button>
         </li>
