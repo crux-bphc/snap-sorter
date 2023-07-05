@@ -22,7 +22,7 @@
   - Get data from announcements endpoint and display sorted by latest
 - [ ] Profile
   - [x] Dropzone from mantine to collect images
-  - Hover on image to delete the image from the list
+  - [x] Hover on image to delete the image from the list
   - [x] Reset btn to clear
   - Submit btn to send them to the backend `store images` endpoint
 - [ ] Search (the most uncertain part of the code)
