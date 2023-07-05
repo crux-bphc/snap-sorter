@@ -1,12 +1,25 @@
-FROM node:lts-alpine
+FROM node:18-alpine
+
 WORKDIR /app
-COPY package.json pnpm-lock.yaml ./
-RUN npm install -g pnpm && pnpm i
-COPY --chown=node:node *.config.js .
-COPY --chown=node:node *.config.ts .
-COPY --chown=node:node tsconfig.json .
-COPY --chown=node:node src ./src
-COPY --chown=node:node static ./static
-COPY --chown=node:node .npmrc .npmrc
-COPY --chown=node:node .env.development .env.development
-CMD ["pnpm","dev","--host"]
+
+COPY package.json yarn.lock* package-lock.json* pnpm-lock.yaml* ./
+RUN \
+  if [ -f yarn.lock ]; then yarn --frozen-lockfile; \
+  elif [ -f package-lock.json ]; then npm ci; \
+  elif [ -f pnpm-lock.yaml ]; then yarn global add pnpm && pnpm i; \
+  fi
+
+COPY pages ./pages
+COPY components ./components
+COPY public ./public
+COPY *.config.js .
+COPY tsconfig.json .
+
+ENV NEXT_TELEMETRY_DISABLED 1
+
+CMD \
+  if [ -f yarn.lock ]; then yarn dev; \
+  elif [ -f package-lock.json ]; then npm run dev; \
+  elif [ -f pnpm-lock.yaml ]; then pnpm dev; \
+  else yarn dev; \
+  fi
