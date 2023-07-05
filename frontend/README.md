@@ -21,9 +21,9 @@
 - [ ] Announcements
   - Get data from announcements endpoint and display sorted by latest
 - [ ] Profile
-  - Dropzone from mantine to collect images
+  - [x] Dropzone from mantine to collect images
   - Hover on image to delete the image from the list
-  - Reset btn to clear
+  - [x] Reset btn to clear
   - Submit btn to send them to the backend `store images` endpoint
 - [ ] Search (the most uncertain part of the code)
   - Input field for UID
