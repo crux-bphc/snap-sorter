@@ -9,17 +9,18 @@
 - [ ] Navbar
   - Logo which takes to `search` page when logged in else to `login`
   - [x] Links to each page (profile, search, announcements)
+  - [ ] Make it dynamic when showing the pages i.e., do not display announcements route when on announcements page, show other routes only when logged in.
 - [ ] Footer
   - Trademark if needed (to be discussed)
   - Links to socials and contact details
-- [ ] Common layout with navbar and footer
+- [x] Common layout with navbar and footer
 
 #### Pages
 
 - [x] Login page
   - [x] Login button which initiates the oauth flow
-- [ ] Announcements
-  - Get data from announcements endpoint and display sorted by latest
+- [x] Announcements
+  - [x] Get data from announcements endpoint and display sorted by latest
 - [ ] Profile
   - [x] Dropzone from mantine to collect images
   - [x] Hover on image to delete the image from the list
@@ -29,6 +30,7 @@
   - Input field for UID
   - Filter for year and events
   - Similar to dropzone to show the received images
+  - Get images with the uid and display them
   - [ ] Modal to change tags
     - Badges to display the received tags
     - Delete or add badges(tags)
@@ -64,7 +66,7 @@
 
 - [ ] Docker files
   - [ ] Production
-  - [ ] Development
+  - [x] Development
 - [ ] Config
   - [ ] Prettier
 - [ ] Color scheme and UI
