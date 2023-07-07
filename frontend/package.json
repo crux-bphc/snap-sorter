@@ -11,16 +11,18 @@
   "dependencies": {
     "@emotion/react": "^11.11.1",
     "@emotion/server": "^11.11.0",
-    "@mantine/core": "^6.0.15",
-    "@mantine/dropzone": "^6.0.15",
-    "@mantine/hooks": "^6.0.15",
-    "@mantine/next": "^6.0.15",
-    "@types/node": "20.3.3",
+    "@mantine/core": "^6.0.16",
+    "@mantine/dates": "^6.0.16",
+    "@mantine/dropzone": "^6.0.16",
+    "@mantine/hooks": "^6.0.16",
+    "@mantine/next": "^6.0.16",
+    "@types/node": "20.4.0",
     "@types/react": "18.2.14",
     "@types/react-dom": "18.2.6",
+    "dayjs": "^1.11.9",
     "eslint": "8.44.0",
-    "eslint-config-next": "13.4.7",
-    "next": "13.4.7",
+    "eslint-config-next": "13.4.9",
+    "next": "13.4.9",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "typescript": "5.1.6"
@@ -28,7 +30,7 @@
   "devDependencies": {
     "@iconify/react": "^4.1.1",
     "autoprefixer": "^10.4.14",
-    "postcss": "^8.4.24",
+    "postcss": "^8.4.25",
     "prettier": "^2.8.8",
     "tailwindcss": "^3.3.2"
   }

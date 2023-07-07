@@ -26,15 +26,16 @@
   - [x] Hover on image to delete the image from the list
   - [x] Reset btn to clear
   - Submit btn to send them to the backend `store images` endpoint
-- [ ] Search (the most uncertain part of the code)
-  - Input field for UID
-  - Filter for year and events
-  - Similar to dropzone to show the received images
-  - Get images with the uid and display them
-  - [ ] Modal to change tags
-    - Badges to display the received tags
-    - Delete or add badges(tags)
-    - Save button to send the updated tags back
+- [ ] Search page
+  - Integrate with backend(might need to change the props etc.,)
+  - [x] Input field for UID
+  - [x] Filter for year and events
+  - [x] Similar to dropzone to show the received images
+  - [x] Get images with the uid and display them
+  - [x] Modal to change tags
+    - [x] Badges to display the received tags
+    - [x] Delete or add badges(tags)
+    - [x] Save button to send the updated tags back
 
 ### Backend
 
