@@ -4,13 +4,16 @@ import BaseLayout from "@/components/layouts/BaseLayout";
 import { Button, Group, MultiSelect, TextInput } from "@mantine/core";
 import { useState } from "react";
 import { YearPickerInput } from "@mantine/dates";
+import ImageWithModal from "@/components/ImageWithModal";
 
 // TODO: Make the UI better for larger screens
 export default function Search() {
   const [uid, setUid] = useState("");
   const [events, setEvents] = useState<string[]>([]);
   const [eventYear, setEventYear] = useState<Date | null>(new Date());
-  const [images, setImages] = useState([]);
+  const [images, setImages] = useState<{ imageUrl: string; tags: string[] }[]>(
+    []
+  );
 
   const eventsFromDatabase = [
     { value: "1", label: "Atmos" },
@@ -22,7 +25,21 @@ export default function Search() {
     console.log(uid);
     console.log(events);
     console.log(eventYear);
+
+    setImages([
+      {
+        imageUrl:
+          "https://images.unsplash.com/photo-1538991383142-36c4edeaffde?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1771&q=80",
+        tags: ["CSA", "A7"],
+      },
+    ]);
   }
+
+  const previews = images.map(({ imageUrl, tags }, index) => {
+    return (
+      <ImageWithModal key={index} imageUrl={imageUrl} tagsFromDatabase={tags} />
+    );
+  });
 
   return (
     <BaseLayout>
@@ -66,6 +83,14 @@ export default function Search() {
               </Button>
             </Group>
           </article>
+        </section>
+
+        <section className="px-10">
+          <div
+            className={`grid grid-cols-1 py-4 sm:grid-cols-2 md:grid-cols-3 gap-4 mt-5 lg:grid-cols-4 xl:grid-cols-5`}
+          >
+            {previews}
+          </div>
         </section>
       </main>
     </BaseLayout>
