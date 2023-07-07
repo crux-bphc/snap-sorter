@@ -24,6 +24,7 @@ export default function Search() {
   async function handleSearch() {
     console.log(uid);
     console.log(events);
+    // TODO: Handle events being empty
     console.log(eventYear);
 
     setImages([
@@ -44,45 +45,48 @@ export default function Search() {
   return (
     <BaseLayout>
       <main>
-        <section className="px-10 py-4 grid-cols-1 md:grid-cols-2 grid gap-x-4">
-          <article>
-            {/* TODO: Regex validation for BITS UIDs */}
-            <TextInput
-              value={uid}
-              label="UID"
-              placeholder="fxxxxxxxx"
-              onChange={(event) => setUid(event.currentTarget.value)}
-              required
-              withAsterisk
-            />
-            <MultiSelect
-              data={eventsFromDatabase}
-              placeholder="Pick events"
-              label="Events"
-              onChange={setEvents}
-              value={events}
-              clearButtonProps={{ "aria-label": "Clear selection" }}
-              searchable
-              clearable
-              required
-              withAsterisk
-            />
-          </article>
-          <article>
-            <Group position="center" className="m-2">
-              <YearPickerInput
-                label="Event year"
-                value={eventYear}
-                onChange={setEventYear}
-                maxDate={new Date()}
+        <section className="px-10 py-4 max-w-md mx-auto">
+          <form onSubmit={(event) => event.preventDefault()}>
+            <article>
+              {/* TODO: Regex validation for BITS UIDs */}
+              <TextInput
+                value={uid}
+                label="UID"
+                placeholder="fxxxxxxxx"
+                onChange={(event) => setUid(event.currentTarget.value)}
+                required
+                withAsterisk
               />
-            </Group>
-            <Group position="center">
-              <Button type="submit" color="green" onClick={handleSearch}>
-                Search
-              </Button>
-            </Group>
-          </article>
+              <MultiSelect
+                data={eventsFromDatabase}
+                placeholder="Pick events"
+                label="Events"
+                onChange={setEvents}
+                value={events}
+                clearButtonProps={{ "aria-label": "Clear selection" }}
+                searchable
+                clearable
+                required
+                withAsterisk
+              />
+            </article>
+            <article>
+              <Group position="center" className="m-2">
+                <YearPickerInput
+                  label="Event year"
+                  value={eventYear}
+                  onChange={setEventYear}
+                  withAsterisk
+                  maxDate={new Date()}
+                />
+              </Group>
+              <Group position="center">
+                <Button type="submit" color="green" onClick={handleSearch}>
+                  Search
+                </Button>
+              </Group>
+            </article>
+          </form>
         </section>
 
         <section className="px-10">
