@@ -13,38 +13,40 @@ export default function Navbar() {
       <Anchor component={Link} href={"/"}>
         Logo
       </Anchor>
-      {session?.user && (
-        <ul className="list-none flex px-0">
-          <li className="mx-2">
-            <Button
-              component={Link}
-              href={"/announcements"}
-              className="capitalize"
-            >
-              announcements
-            </Button>
-          </li>
-          <li className="mx-2">
-            <Button
-              component={Link}
-              href={"/app/profile"}
-              className=" capitalize"
-            >
-              profile
-            </Button>
-          </li>
-          <li className="mx-2">
-            <Button component={Link} href={"/app/search"} className=" capitalize">
-              search
-            </Button>
-          </li>
-          <li className="mx-2">
-            <Button onClick={() => signOut({ callbackUrl: "/login" })} className=" capitalize">
-              logout
-            </Button>
-          </li>
-        </ul>
-      )}
+      <ul className="list-none flex px-0">
+        <li className="mx-2">
+          <Button
+            component={Link}
+            href={"/announcements"}
+            className="capitalize"
+          >
+            announcements
+          </Button>
+        </li>
+        {session?.user && (
+          <>
+            <li className="mx-2">
+              <Button
+                component={Link}
+                href={"/app/profile"}
+                className=" capitalize"
+              >
+                profile
+              </Button>
+            </li>
+            <li className="mx-2">
+              <Button component={Link} href={"/app/search"} className=" capitalize">
+                search
+              </Button>
+            </li>
+            <li className="mx-2">
+              <Button onClick={() => signOut({ callbackUrl: "/login" })} className=" capitalize">
+                logout
+              </Button>
+            </li>
+          </>
+        )}
+      </ul>
     </nav>
   );
 }
