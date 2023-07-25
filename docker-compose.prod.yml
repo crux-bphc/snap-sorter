@@ -2,7 +2,6 @@ version: "3.8"
 services:
   frontend:
     container_name: snap-sorter-frontend-prod
-    image: snap-sorter-frontend-prod
     build:
       context: ./frontend
       dockerfile: prod.Dockerfile
@@ -12,10 +11,11 @@ services:
       - ./frontend/.env.production
     ports:
       - 80:3000
-     volumes:
+    volumes:
       - ./frontend/pages:/app/pages
       - ./frontend/components:/app/components
       - ./frontend/styles:/app/styles
+    image: snap-sorter-frontend-prod
   db:
     image: postgres:latest
     container_name: snap-sorter-database-prod

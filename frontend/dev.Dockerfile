@@ -12,8 +12,12 @@ RUN \
 COPY pages ./pages
 COPY components ./components
 COPY public ./public
+COPY styles ./styles
 COPY *.config.js .
 COPY tsconfig.json .
+COPY .env.development .env
+COPY prisma ./prisma
+RUN pnpx prisma generate
 
 ENV NEXT_TELEMETRY_DISABLED 1
 
