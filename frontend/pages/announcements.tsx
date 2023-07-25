@@ -40,7 +40,7 @@ export default function Announcements() {
 
   return (
     <BaseLayout>
-      <section className="grid grid-cols-1 p-5 gap-y-4 mx-auto">
+      <main className="grid grid-cols-1 p-5 gap-y-4 mx-auto">
         {announcements.map(({ id, title, description, date }) => (
           <article
             key={id}
@@ -53,7 +53,7 @@ export default function Announcements() {
             <p>{description}</p>
           </article>
         ))}
-      </section>
+      </main>
     </BaseLayout>
   );
 }
