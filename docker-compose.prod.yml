@@ -12,7 +12,9 @@ services:
     ports:
       - 80:3000
     volumes:
-      - ./frontend/src:/app/src
+      - ./frontend/pages:/app/pages
+      - ./frontend/components:/app/components
+      - ./frontend/styles:/app/styles
     image: snap-sorter-frontend-prod
   db:
     image: postgres:latest
@@ -22,6 +24,5 @@ services:
       - ./frontend/.env.production
     volumes:
       - data:/var/lib/postgresql/data
-      - ./scripts/:/docker-entrypoint-initdb.d
 volumes:
   data:

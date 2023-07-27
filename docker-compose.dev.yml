@@ -8,8 +8,11 @@ services:
       dockerfile: dev.Dockerfile
     depends_on:
       - db
+    env_file:
+      - ./frontend/.env.development
     ports:
       - 3000:3000
+      - 5555:5555
     volumes:
       - ./frontend/pages:/app/pages
       - ./frontend/components:/app/components

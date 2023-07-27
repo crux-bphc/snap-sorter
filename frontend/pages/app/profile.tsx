@@ -8,15 +8,16 @@ import { useState } from "react";
 import { Image, Text, Group, Button, ActionIcon } from "@mantine/core";
 import { Dropzone, FileWithPath } from "@mantine/dropzone";
 import { Icon } from "@iconify/react";
-
-// TODO: Replace with data from OAuth
-const userData = {
-  email: "email@email.com",
-  name: "Kovid Lakhera",
-};
+import { useSession } from "next-auth/react";
 
 export default function Profile() {
   const [images, setImages] = useState<FileWithPath[]>([]);
+  const {data: session} = useSession();
+
+  const userData = {
+    email: session?.user?.email,
+    name: session?.user?.name
+  };
 
   const handleImageUpload = async function () {
     // TODO: Finish image upload request

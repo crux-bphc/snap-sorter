@@ -1,4 +1,5 @@
-// TODO: Redirect to /login or /app/search
+import BaseLayout from "@/components/layouts/BaseLayout";
+
 export default function Home() {
-  return <h1>Hello world</h1>;
+  return <BaseLayout />;
 }
