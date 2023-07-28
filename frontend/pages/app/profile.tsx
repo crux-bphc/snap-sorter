@@ -19,9 +19,16 @@ export default function Profile() {
     name: session?.user?.name
   };
 
-  const handleImageUpload = async function () {
-    // TODO: Finish image upload request
-    console.log(images);
+  const handleImageUpload = async function () {    
+    const fd = new FormData();
+    for (const file of images) {
+      fd.append("files[]", file);
+    }
+
+    const res = await fetch('/api/uploadFiles', {
+      method: "POST",
+      body: fd
+    });
   };
 
   const previews = images.map((file, index) => {

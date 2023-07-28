@@ -25,6 +25,7 @@
     "dotenv": "^16.3.1",
     "eslint": "8.44.0",
     "eslint-config-next": "13.4.9",
+    "formidable": "^3.5.0",
     "next": "13.4.9",
     "next-auth": "^4.22.3",
     "react": "18.2.0",
@@ -33,6 +34,7 @@
   },
   "devDependencies": {
     "@iconify/react": "^4.1.1",
+    "@types/formidable": "^3.4.0",
     "autoprefixer": "^10.4.14",
     "postcss": "^8.4.25",
     "prettier": "^2.8.8",
