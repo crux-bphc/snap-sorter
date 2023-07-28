@@ -87,7 +87,7 @@ def create_clusters(_datapoints: list[Datapoint], _epsilon:float, _min_samples:i
     Returns:
         list[Cluster] : a list of clusters found
     """
-    points = np.array([point.data[0].numpy() for point in _datapoints]) 
+    points = np.array([point.data for point in _datapoints]) 
     scaler = StandardScaler()
     scaler.fit(points)
     points = scaler.transform(points)
@@ -104,7 +104,7 @@ def create_clusters(_datapoints: list[Datapoint], _epsilon:float, _min_samples:i
             point: Datapoint = _datapoints[idx] 
             point.label= labelid 
             paths.append(point.path) 
-            encodings.append(point.data.numpy()) 
+            encodings.append(point.data) 
             id_cluster.datapoints.append(point)
         id_cluster.add_paths(paths) 
         id_cluster.mean_encoding = np.mean(np.asarray(encodings), axis=0) 
