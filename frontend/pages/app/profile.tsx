@@ -5,15 +5,16 @@
 // !There's no max file size limit or max number of files limit
 import BaseLayout from "@/components/layouts/BaseLayout";
 import { useState } from "react";
-import { Image, Text, Group, Button, ActionIcon } from "@mantine/core";
+import { Image, Text, Group, Button, ActionIcon, Alert, Stack } from "@mantine/core";
 import { Dropzone, FileWithPath } from "@mantine/dropzone";
 import { Icon } from "@iconify/react";
 import { useSession } from "next-auth/react";
 
 export default function Profile() {
   const [images, setImages] = useState<FileWithPath[]>([]);
-  const {data: session} = useSession();
+  const [uploadStatus, setUploadStatus] = useState("");
 
+  const {data: session} = useSession();
   const userData = {
     email: session?.user?.email,
     name: session?.user?.name
@@ -29,6 +30,8 @@ export default function Profile() {
       method: "POST",
       body: fd
     });
+
+    setUploadStatus(res.ok ? "success" : "failure");
   };
 
   const previews = images.map((file, index) => {
@@ -70,24 +73,51 @@ export default function Profile() {
           </section>
 
           <section>
-            <Group position="center" className="py-5">
-              <Button
-                type="submit"
-                color="green"
-                onClick={handleImageUpload}
-                disabled={images.length === 0}
-              >
-                Upload
-              </Button>
-              <Button
-                type="button"
-                color="red"
-                onClick={() => setImages([])}
-                disabled={images.length === 0}
-              >
-                Reset
-              </Button>
-            </Group>
+            <Stack align="center" className="py-5">
+              <Group position="center" >
+                <Button
+                  type="submit"
+                  color="green"
+                  onClick={handleImageUpload}
+                  disabled={images.length === 0}
+                >
+                  Upload
+                </Button>
+                <Button
+                  type="button"
+                  color="red"
+                  onClick={() => {
+                    setImages([]);
+                    setUploadStatus("");
+                  }}
+                  disabled={images.length === 0}
+                >
+                  Reset
+                </Button>
+              </Group>
+              {uploadStatus === "failure" && (
+                <Alert 
+                  className="pt-5 px-5" 
+                  icon={<Icon icon="mdi:alert-circle-outline" />} 
+                  title="File upload failed!" 
+                  color="red" 
+                  radius="md" 
+                  withCloseButton
+                  onClose={() => setUploadStatus("")}> 
+                </Alert>
+              )}
+              {uploadStatus === "success" && (
+                <Alert 
+                  className="pt-5 px-5" 
+                  icon={<Icon icon="mdi:check-circle-outline" />} 
+                  title="Uploaded files successfully!" 
+                  color="green" 
+                  radius="md" 
+                  withCloseButton
+                  onClose={() => setUploadStatus("")}> 
+                </Alert>
+              )}
+            </Stack>
             <Dropzone accept={["image/jpeg", "image/png"]} onDrop={setImages}>
               <Text align="center">Drop images here</Text>
             </Dropzone>
