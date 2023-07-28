@@ -2,7 +2,7 @@
 import type { NextApiRequest, NextApiResponse } from "next"
 import { getServerSession } from "next-auth/next"
 import formidable from "formidable";
-import { authOptions } from "./auth/[...nextauth]"
+import { authOptions, prisma } from "./auth/[...nextauth]"
 import { mkdirSync } from "fs";
 
 export const config = {
@@ -16,12 +16,11 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method !== "POST") {
     return res.status(405).send(`Method ${req.method} Not Allowed`);
   }
-  if (!session) {
+  if (!session || !session.user.id) {
     return res.status(401).send("Unauthorized");
   }
 
-  // formidable discards files if uploadDir does not exist
-	mkdirSync(`./uploads/`, { recursive: true });
+  let fileIds: string[] = [];
 
   // TODO: Add max file size
   const form = formidable({
@@ -33,14 +32,28 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       return name === "files[]";
     },
     filename: (name, ext, part, form) => {
-      // TODO: Store file UUIDs
-      return crypto.randomUUID() + ext;
+      const fileId = crypto.randomUUID();
+      fileIds.push(fileId);
+      return fileId + ext;
     },
   });
 
   try {
+    // formidable discards files if uploadDir does not exist
+	  mkdirSync(`./uploads/`, { recursive: true });
     await form.parse(req);
-    // TODO: Save to DB
+
+    for (const fileId of fileIds) {
+      await prisma.image.create({
+        data: {
+          id: fileId,
+          owner: {
+            connect: { id: session.user.id }
+          }
+        }
+      });
+    }
+    
     res.status(200).send("OK");
   } catch (e) {
     console.error(e);
