@@ -21,11 +21,11 @@
   - [x] Login button which initiates the oauth flow
 - [x] Announcements
   - [x] Get data from announcements endpoint and display sorted by latest
-- [ ] Profile
+- [x] Profile
   - [x] Dropzone from mantine to collect images
   - [x] Hover on image to delete the image from the list
   - [x] Reset btn to clear
-  - Submit btn to send them to the backend `store images` endpoint
+  - [x] Submit btn to send them to the backend `store images` endpoint
 - [ ] Search page
   - Integrate with backend(might need to change the props etc.,)
   - [x] Input field for UID
@@ -43,13 +43,13 @@
 
 - [ ] Announcements
   - Get announcements from DB
-- [ ] Store images
+- [x] Store images
   - Take the images and dump them in some folder called `/temp/images` as `studentuid_imagename.extension`
   - After dumping them update the db `Upload Image` with the image and path and uid
 - [ ] Search images
   - Frontend will send uid as param along with filters (have defaults for filters too)
   - Return images from the `Unknown schema joined with Dopy Image` table with tags
-- [ ] Auth
+- [x] Auth
   - Nextauth will do the needful (more deep dive on what exactly is happening might be needed)
 - [ ] Update tags for a given image id
   - Endpoint will be a `PATCH` request which takes image id and the updated tags and updates them in the db.
@@ -58,7 +58,7 @@
 
 - [ ] Prisma or Drizzle with postgresql
 - [ ] Announcement schema - {uuid, title, description, created at time stamp}
-- [ ] Upload Image - {uuid,  fk to student uid, image path}
+- [x] Upload Image - {uuid,  fk to student uid, image path}
 - [ ] Some Unknown schema to store tagged image - {fk to student uid, image id}
 - [ ] Dopy Image - {uuid, image path, event name, tags}
 
