@@ -13,7 +13,7 @@ class EmbeddingPipeline:
         
         Attributes:
             detector (MTCNN): MTCNN detector object. Defaults to MTCNN(keep_all=True, device=device).eval().
-            resnet (InceptionResnetV1): InceptionResnetV1 object. Defaults to InceptionResnetV1(pretrained=pretrained, device=device).eval().
+            resnet (InceptionResnetV1): InceptionResnetV1 object. Defaults to InceptionResnetV1(pretrained='vggface2').eval().
             
     """
     def __init__(self, detector: MTCNN = None, default_resnet: bool = True, embedding_size: int = 512):
