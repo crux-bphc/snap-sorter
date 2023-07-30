@@ -1,35 +1,23 @@
 import BaseLayout from "@/components/layouts/BaseLayout";
+import type { InferGetServerSidePropsType } from "next";
+import { prisma } from "./api/auth/[...nextauth]";
+import { Announcement } from "@prisma/client";
 
-// TODO: Get announcements from db
-let announcements = [
-	{
-		id: 1,
-		title: "Important announcement",
-		description:
-			"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam elementum vehicula enim. Sed rhoncus, odio quis pulvinar orn.",
-		date: new Date(),
-	},
-	{
-		id: 2,
-		title: "Not Important announcement",
-		description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-		date: new Date(),
-	},
-	{
-		id: 3,
-		title: "Not Important announcement",
-		description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-		date: new Date(),
-	},
-	{
-		id: 4,
-		title: "Not Important announcement",
-		description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-		date: new Date(),
-	},
-];
+// The props returned by getServerSideProps have to be JSON serializable but Date is not
+type AnnouncementStringified = Omit<Announcement, "createdAt"> & {
+	createdAt: string;
+};
 
-export default function Announcements() {
+export const getServerSideProps = async () => {
+	const announcements = await prisma.announcement.findMany();
+	return {
+		props: { announcements: JSON.parse(JSON.stringify(announcements)) },
+	};
+};
+
+export default function Announcements({
+	announcements,
+}: InferGetServerSidePropsType<typeof getServerSideProps>) {
 	if (announcements.length == 0) {
 		return (
 			<BaseLayout>
@@ -40,18 +28,20 @@ export default function Announcements() {
 
 	return (
 		<BaseLayout>
-			<main className="grid grid-cols-1 p-5 gap-y-4 mx-auto">
-				{announcements.map(({ id, title, description, date }) => (
-					<article
-						key={id}
-						className="border border-solid border-gray-300/75 rounded-md p-4 bg-gray-100 shadow-md">
-						<div>
-							<h3>{title}</h3>
-							<p>{date.toDateString()}</p>
-						</div>
-						<p>{description}</p>
-					</article>
-				))}
+			<main className="mx-auto grid grid-cols-1 gap-y-4 p-5">
+				{announcements.map(
+					({ id, title, description, createdAt }: AnnouncementStringified) => (
+						<article
+							key={id}
+							className="rounded-md border border-solid border-gray-300/75 bg-gray-100 p-4 shadow-md">
+							<div>
+								<h3>{title}</h3>
+								<p>{new Date(createdAt).toDateString()}</p>
+							</div>
+							<p>{description}</p>
+						</article>
+					)
+				)}
 			</main>
 		</BaseLayout>
 	);

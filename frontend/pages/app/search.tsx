@@ -45,7 +45,7 @@ export default function Search() {
 	return (
 		<BaseLayout>
 			<main>
-				<section className="px-10 py-4 max-w-md mx-auto">
+				<section className="mx-auto max-w-md px-10 py-4">
 					<form onSubmit={(event) => event.preventDefault()}>
 						<article>
 							{/* TODO: Regex validation for BITS UIDs */}
@@ -91,7 +91,7 @@ export default function Search() {
 
 				<section className="px-10">
 					<div
-						className={`grid grid-cols-1 py-4 sm:grid-cols-2 md:grid-cols-3 gap-4 mt-5 lg:grid-cols-4 xl:grid-cols-5`}>
+						className={`mt-5 grid grid-cols-1 gap-4 py-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5`}>
 						{previews}
 					</div>
 				</section>

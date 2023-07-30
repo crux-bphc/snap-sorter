@@ -13,7 +13,7 @@ type Props = {
 export default function BaseLayout({ children }: Props) {
 	return (
 		<AuthLayout>
-			<div className="flex flex-col min-h-screen justify-between">
+			<div className="flex min-h-screen flex-col justify-between">
 				<Navbar />
 				{children}
 				<Footer />

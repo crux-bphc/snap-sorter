@@ -45,7 +45,7 @@ export default function ImagePreviewModal({
 			/>
 
 			<Modal centered opened={opened} onClose={close} size={"auto"}>
-				<section className="sm:flex sm:gap-x-2 px-2 py-4">
+				<section className="px-2 py-4 sm:flex sm:gap-x-2">
 					<Image
 						alt={imageUrl}
 						src={imageUrl}

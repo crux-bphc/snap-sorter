@@ -8,7 +8,7 @@ export default function Login() {
 			<BaseLayout>
 				<main>
 					<div className="container mx-auto text-center">
-						<h1 className="text-6xl my-3">Snap Sorter</h1>
+						<h1 className="my-3 text-6xl">Snap Sorter</h1>
 						<Button
 							type="submit"
 							size="md"
@@ -16,7 +16,7 @@ export default function Login() {
 							onClick={() => signIn("google", { callbackUrl: "/app/profile" })}>
 							Login with Google
 						</Button>
-						<p className="text-xs my-1">Use BITS mail*</p>
+						<p className="my-1 text-xs">Use BITS mail*</p>
 					</div>
 				</main>
 			</BaseLayout>
