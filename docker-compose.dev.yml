@@ -17,6 +17,7 @@ services:
       - ./frontend/pages:/app/pages
       - ./frontend/components:/app/components
       - ./frontend/styles:/app/styles
+      - ./images/uploads:/app/uploads
   db:
     image: postgres:latest
     container_name: snap-sorter-database-dev

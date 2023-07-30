@@ -7,17 +7,17 @@ import Footer from "@/components/Footer";
 import AuthLayout from "./AuthLayout";
 
 type Props = {
-  children?: ReactNode;
+	children?: ReactNode;
 };
 
 export default function BaseLayout({ children }: Props) {
-  return (
-    <AuthLayout>
-      <div className="flex flex-col min-h-screen justify-between">
-        <Navbar />
-        {children}
-        <Footer />
-      </div>
-    </AuthLayout>
-  );
+	return (
+		<AuthLayout>
+			<div className="flex flex-col min-h-screen justify-between">
+				<Navbar />
+				{children}
+				<Footer />
+			</div>
+		</AuthLayout>
+	);
 }
