@@ -13,6 +13,7 @@ COPY pages ./pages
 COPY components ./components
 COPY public ./public
 COPY styles ./styles
+COPY types ./types
 COPY *.config.js .
 COPY tsconfig.json .
 COPY .env.development .env
