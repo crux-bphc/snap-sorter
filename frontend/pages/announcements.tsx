@@ -3,6 +3,7 @@ import type { InferGetServerSidePropsType } from "next";
 import { prisma } from "./api/auth/[...nextauth]";
 import { Announcement } from "@prisma/client";
 
+// The props returned by getServerSideProps have to be JSON serializable but Date is not
 type AnnouncementStringified = Omit<Announcement, "createdAt"> & {
 	createdAt: string;
 };
