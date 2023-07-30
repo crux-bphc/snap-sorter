@@ -80,11 +80,11 @@
 
 1. Rename `.env.example` as `.env` or `.env.development` and add your `GOOGLE_CLIENT_ID` and `GOOGLE_CLIENT_SECRET` from google cloud console.
 2. Run the following command and visit http://localhost:3000
-    ```bash
-    docker compose -f docker-compose.dev.yml up
-    ```
+   ```bash
+   docker compose -f docker-compose.dev.yml up
+   ```
 3. Locally for the editor you also have to install the dependencies and also generate prisma types. Run the following commands to do that.
-    ```bash
-    pnpm install
-    pnpm prisma generate
-    ```
+   ```bash
+   pnpm install
+   pnpm prisma generate
+   ```
