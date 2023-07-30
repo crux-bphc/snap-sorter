@@ -2,7 +2,6 @@ from inference import EmbeddingPipeline
 import datapoint_clusterer as clusterer
 import numpy as np
 import os
-from tqdm import tqdm
 import torch
 import pickle
 from exception import FaceNotFoundError
@@ -39,7 +38,7 @@ def write_datapoints(source_path: str, dest_path: str):
     points = []
     pipeline = EmbeddingPipeline()
     for root, _, filenames in os.walk(source_path):
-        for filename in tqdm(filenames):
+        for filename in filenames:
             imgpath = os.path.join(root, filename)
             embeddings = pipeline(imgpath)
             if embeddings is not None:
