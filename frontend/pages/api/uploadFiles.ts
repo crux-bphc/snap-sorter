@@ -37,7 +37,7 @@ export default async function handler(
 		filename: (name, ext, part, form) => {
 			const fileId = crypto.randomUUID();
 			fileIds.push(fileId);
-			return fileId + ext;
+			return `${session.user.id}_${fileId}${ext}`;
 		},
 	});
 
