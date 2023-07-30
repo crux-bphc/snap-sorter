@@ -5,7 +5,6 @@ import os
 import torch
 import pickle
 from exception import FaceNotFoundError
-from model import FaceNet
 
 def cluster_from_file(source_path: str, dest_path: str, epsilon: float):
     '''
@@ -80,10 +79,4 @@ def get_cluster_ids(clusters: list[clusterer.Cluster], image_path: str):
     
     else:
         raise FaceNotFoundError(image_path)
-    
-            
-        
-    
-        
-            
-            
+
