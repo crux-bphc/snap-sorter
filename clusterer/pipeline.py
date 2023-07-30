@@ -25,7 +25,7 @@ def cluster_from_file(source_path: str, dest_path: str, epsilon: float):
         
 def write_datapoints(source_path: str, dest_path: str):
     '''
-    reads images from file or folder, creates datapoints and writes them into .pkl file
+    reads images from folder, creates datapoints and writes them into .pkl file
     
     Args:
         source_path (str): path of file or folder containing images
@@ -36,29 +36,17 @@ def write_datapoints(source_path: str, dest_path: str):
     '''
     points = []
     pipeline = EmbeddingPipeline()
-    
-    if os.path.isfile(source_path):
-        embeddings = pipeline(source_path)
-        if embeddings is not None:
-            for embedding in embeddings:
-                embedding = torch.from_numpy(embedding)
-                point = clusterer.Datapoint(embedding, None, source_path)
-                points.append(point)
-        else:
-            raise FaceNotFoundError(source_path)
-        
-    else:
-        for root, _, filenames in os.walk(source_path):
-            for filename in filenames:
-                imgpath = os.path.join(root, filename)
-                embeddings = pipeline(imgpath)
-                if embeddings is not None:
-                    for embedding in embeddings:
-                        embedding = torch.from_numpy(embedding)
-                        point = clusterer.Datapoint(embedding, None, imgpath)
-                        points.append(point)
-                else:
-                    raise FaceNotFoundError(imgpath)
+    for root, _, filenames in os.walk(source_path):
+        for filename in filenames:
+            imgpath = os.path.join(root, filename)
+            embeddings = pipeline(imgpath)
+            if embeddings is not None:
+                for embedding in embeddings:
+                    embedding = torch.from_numpy(embedding)
+                    point = clusterer.Datapoint(embedding, None, imgpath)
+                    points.append(point)
+            else:
+                raise FaceNotFoundError(imgpath)
                 
     with open(dest_path, 'wb') as f:
         pickle.dump(points, f, protocol=pickle.HIGHEST_PROTOCOL)
@@ -91,10 +79,4 @@ def get_cluster_ids(clusters: list[clusterer.Cluster], image_path: str):
     
     else:
         raise FaceNotFoundError(image_path)
-    
-            
-        
-    
-        
-            
-            
+

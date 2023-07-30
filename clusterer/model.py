@@ -71,7 +71,7 @@ class FaceNet:
         Returns:
             embeddings (np.ndarray) : numpy array of embeddings
         """
-        images = self.preprocess(images)
+        # images = self.preprocess(images)
         embeddings: torch.Tensor = self.forward(images)
         return embeddings.detach().numpy()
     
