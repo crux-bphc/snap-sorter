@@ -108,7 +108,9 @@ export default function Profile() {
 									color="red"
 									radius="md"
 									withCloseButton
-									onClose={() => setUploadStatus("")}></Alert>
+									onClose={() => setUploadStatus("")}>
+									{}
+								</Alert>
 							)}
 							{uploadStatus === "success" && (
 								<Alert
@@ -118,7 +120,9 @@ export default function Profile() {
 									color="green"
 									radius="md"
 									withCloseButton
-									onClose={() => setUploadStatus("")}></Alert>
+									onClose={() => setUploadStatus("")}>
+									{}
+								</Alert>
 							)}
 						</Stack>
 						<Dropzone
