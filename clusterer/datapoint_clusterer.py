@@ -104,7 +104,7 @@ def create_clusters(_datapoints: list[Datapoint], _epsilon:float, _min_samples:i
             point: Datapoint = _datapoints[idx] 
             point.label= labelid 
             paths.append(point.path) 
-            encodings.append(point.data) 
+            encodings.append(point.data.numpy()) 
             id_cluster.datapoints.append(point)
         id_cluster.add_paths(paths) 
         id_cluster.mean_encoding = np.mean(np.asarray(encodings), axis=0) 
