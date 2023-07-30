@@ -7,9 +7,9 @@
 #### Components
 
 - [ ] Navbar
-  - Logo which takes to `search` page when logged in else to `login`
+  - [ ] Logo which takes to `search` page when logged in else to `login`
   - [x] Links to each page (profile, search, announcements)
-  - [ ] Make it dynamic when showing the pages i.e., do not display announcements route when on announcements page, show other routes only when logged in.
+  - [x] Make it dynamic when showing the pages i.e., do not display announcements route when on announcements page, show other routes only when logged in.
 - [ ] Footer
   - Trademark if needed (to be discussed)
   - Links to socials and contact details
@@ -20,6 +20,7 @@
 - [x] Login page
   - [x] Login button which initiates the oauth flow
 - [x] Announcements
+  - [ ] Integrate with backend
   - [x] Get data from announcements endpoint and display sorted by latest
 - [x] Profile
   - [x] Dropzone from mantine to collect images
@@ -27,7 +28,7 @@
   - [x] Reset btn to clear
   - [x] Submit btn to send them to the backend `store images` endpoint
 - [ ] Search page
-  - Integrate with backend(might need to change the props etc.,)
+  - [ ] Integrate with backend(might need to change the props etc.,)
   - [x] Input field for UID
   - [x] Filter for year and events
   - [x] Similar to dropzone to show the received images
@@ -56,7 +57,7 @@
 
 #### Database
 
-- [ ] Prisma or Drizzle with postgresql
+- [x] Prisma or Drizzle with postgresql
 - [ ] Announcement schema - {uuid, title, description, created at time stamp}
 - [x] Upload Image - {uuid, fk to student uid, image path}
 - [ ] Some Unknown schema to store tagged image - {fk to student uid, image id}
@@ -67,8 +68,8 @@
 - [ ] Docker files
   - [ ] Production
   - [x] Development
-- [ ] Config
-  - [ ] Prettier
+- [x] Config
+  - [x] Prettier
 - [ ] Color scheme and UI
 
 <!-- TODO: Update README -->
