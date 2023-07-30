@@ -13,7 +13,7 @@ export default function Navbar() {
 			<Anchor component={Link} href={"/"}>
 				Logo
 			</Anchor>
-			<ul className="list-none flex px-0">
+			<ul className="flex list-none px-0">
 				<li className="mx-2">
 					<Button
 						component={Link}

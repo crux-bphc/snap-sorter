@@ -27,12 +27,12 @@ export default function Announcements({
 
 	return (
 		<BaseLayout>
-			<main className="grid grid-cols-1 p-5 gap-y-4 mx-auto">
+			<main className="mx-auto grid grid-cols-1 gap-y-4 p-5">
 				{announcements.map(
 					({ id, title, description, createdAt }: AnnouncementStringified) => (
 						<article
 							key={id}
-							className="border border-solid border-gray-300/75 rounded-md p-4 bg-gray-100 shadow-md">
+							className="rounded-md border border-solid border-gray-300/75 bg-gray-100 p-4 shadow-md">
 							<div>
 								<h3>{title}</h3>
 								<p>{new Date(createdAt).toDateString()}</p>

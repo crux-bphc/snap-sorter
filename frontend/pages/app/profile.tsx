@@ -46,14 +46,14 @@ export default function Profile() {
 		const imageUrl = URL.createObjectURL(file);
 
 		return (
-			<div key={index} className="relative group">
+			<div key={index} className="group relative">
 				<Image
 					alt={imageUrl}
 					src={imageUrl}
 					imageProps={{ onLoad: () => URL.revokeObjectURL(imageUrl) }}
 				/>
 				<ActionIcon
-					className="absolute bottom-1 right-1 opacity-0 group-hover:opacity-100 transition-opacity duration-300 ease-in-out"
+					className="absolute bottom-1 right-1 opacity-0 transition-opacity duration-300 ease-in-out group-hover:opacity-100"
 					color="red"
 					variant="filled"
 					onClick={() => {
@@ -67,10 +67,10 @@ export default function Profile() {
 
 	return (
 		<BaseLayout>
-			<main className="py-7 px-10">
-				<div className="flex flex-col container mx-auto text-center">
+			<main className="px-10 py-7">
+				<div className="container mx-auto flex flex-col text-center">
 					<section>
-						<h1 className="text-3xl my-2">Profile</h1>
+						<h1 className="my-2 text-3xl">Profile</h1>
 						<p className="m-1">
 							<b>Name:</b> {userData.name}
 						</p>
@@ -102,7 +102,7 @@ export default function Profile() {
 							</Group>
 							{uploadStatus === "failure" && (
 								<Alert
-									className="pt-5 px-5"
+									className="px-5 pt-5"
 									icon={<Icon icon="mdi:alert-circle-outline" />}
 									title="File upload failed!"
 									color="red"
@@ -114,7 +114,7 @@ export default function Profile() {
 							)}
 							{uploadStatus === "success" && (
 								<Alert
-									className="pt-5 px-5"
+									className="px-5 pt-5"
 									icon={<Icon icon="mdi:check-circle-outline" />}
 									title="Uploaded files successfully!"
 									color="green"
@@ -136,7 +136,7 @@ export default function Profile() {
 					<section>
 						{previews.length > 0 && (
 							<div
-								className={`grid grid-cols-1 py-4 sm:grid-cols-2 md:grid-cols-3 gap-4 mt-5 lg:grid-cols-4 xl:grid-cols-5`}>
+								className={`mt-5 grid grid-cols-1 gap-4 py-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5`}>
 								{previews}
 							</div>
 						)}
