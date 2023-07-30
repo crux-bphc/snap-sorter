@@ -72,13 +72,13 @@ class EmbeddingPipeline:
                 images.append(transform_to_image(face))
         return images
 
-    def _create_embeddings(self, faces: list[Image.Image], transform_height: int = 128, transform_width: int = 128):
+    def _create_embeddings(self, faces: list[Image.Image], transform_height: int = 224, transform_width: int = 224):
         """transforms and coverts faces into embedding vectors
 
         Args:
             faces (list[Image.Image]): list of PIL Images of faces
-            transform_height (int, optional): height of transformed image. Defaults to 128.
-            transform_width (int, optional): width of transformed image. Defaults to 128.
+            transform_height (int, optional): height of transformed image. Defaults to 224.
+            transform_width (int, optional): width of transformed image. Defaults to 224.
 
         Returns:
             torch.Tensor: tensor of embedding vectors of faces
