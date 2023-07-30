@@ -58,10 +58,9 @@
 
 - [ ] Prisma or Drizzle with postgresql
 - [ ] Announcement schema - {uuid, title, description, created at time stamp}
-- [x] Upload Image - {uuid,  fk to student uid, image path}
+- [x] Upload Image - {uuid, fk to student uid, image path}
 - [ ] Some Unknown schema to store tagged image - {fk to student uid, image id}
 - [ ] Dopy Image - {uuid, image path, event name, tags}
-
 
 ### Config & Misc
 
@@ -72,9 +71,8 @@
   - [ ] Prettier
 - [ ] Color scheme and UI
 
-
-
 <!-- TODO: Update README -->
+
 ## Getting Started
 
 First, run the development server:
