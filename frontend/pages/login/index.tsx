@@ -13,7 +13,13 @@ export default function Login() {
 							type="submit"
 							size="md"
 							className="my-2"
-							onClick={() => signIn("google", { callbackUrl: "/app/profile" })}>
+							onClick={() =>
+								signIn(
+									"google",
+									{ callbackUrl: "/app/profile" },
+									{ hd: "hyderabad.bits-pilani.ac.in" }
+								)
+							}>
 							Login with Google
 						</Button>
 						<p className="my-1 text-xs">Use BITS mail*</p>
