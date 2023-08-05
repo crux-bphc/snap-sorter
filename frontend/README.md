@@ -78,7 +78,7 @@
 
 ### Development
 
-1. Rename `.env.example` as `.env` or `.env.development` and add your `GOOGLE_CLIENT_ID` and `GOOGLE_CLIENT_SECRET` from google cloud console.
+1. Rename `.env.example` as `.env.development` and add your `GOOGLE_CLIENT_ID` and `GOOGLE_CLIENT_SECRET` from google cloud console. Callback url on google cloud console is `http://localhost:3000/api/auth/callback/google`.
 2. Run the following command and visit http://localhost:3000
    ```bash
    docker compose -f docker-compose.dev.yml up
@@ -88,3 +88,14 @@
    pnpm install
    pnpm prisma generate
    ```
+
+### Production
+
+1. Rename `.env.example` as `.env`(for prisma's sake as of now) and `.env.production`.
+2. Add your `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET` from google cloud console. Callback url on google cloud console is `http://localhost:3000/api/auth/callback/google`. Add a secret to `NEXTAUTH_SECRET`.
+3. Run the following command and visit http://localhost:3000
+   ```bash
+   docker compose -f docker-compose.prod.yml up
+   ```
+4. As of now locally you have to run `npx --yes prisma migrate deploy` to migrate your schema to the database.
+5. Because of how bind mounts work the `uploads` folder ownership needs to be changed. So run `chown -R 1001:1001 uploads` on the server/host.
