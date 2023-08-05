@@ -16,7 +16,6 @@ COPY types ./types
 COPY *.config.js .
 COPY *.config.ts .
 COPY tsconfig.json .
-COPY next-env.d.ts .
 COPY .env.production .env
 COPY prisma ./prisma
 
