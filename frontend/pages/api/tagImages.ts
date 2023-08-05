@@ -22,8 +22,10 @@ export default async function handler(
 	if (!session) {
 		return res.status(401).send("Unauthorized");
 	}
+	if (session.user.role !== "admin") {
+		return res.status(403).send("Forbidden");
+	}
 
-	// TODO: Restrict endpoint to admin users only
 	// TODO: Add (actual) type guard for request body
 
 	try {
