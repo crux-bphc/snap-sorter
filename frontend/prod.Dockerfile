@@ -35,5 +35,9 @@ COPY --from=build /app/public ./public
 COPY --from=build --chown=1001:1001 /app/.next/standalone ./
 COPY --from=build --chown=1001:1001 /app/.next/static ./.next/static 
 
+RUN mkdir -p /app/uploads
+RUN chown -R 1001:1001 /app/uploads
+RUN chmod -R 755 /app/uploads
+
 USER nextjs
 CMD ["node", "server.js"]
