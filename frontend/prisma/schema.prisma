@@ -74,6 +74,8 @@ model Announcement {
   title       String
   description String
   createdAt   DateTime @default(now())
+
+  @@map("announcements")
 }
 
 model DopyImage {
@@ -82,16 +84,22 @@ model DopyImage {
   tags        Tag[]
   taggedUsers User[]
   eventId     String
+
+  @@map("dopy_images")
 }
 
 model Tag {
   id     String      @id @unique
   value  String
   images DopyImage[]
+
+  @@map("tags")
 }
 
 model Event {
   id     String      @id @unique
   name   String
   images DopyImage[]
+
+  @@map("events")
 }
