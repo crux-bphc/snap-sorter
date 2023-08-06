@@ -35,11 +35,6 @@ export default function Profile({
 	const [uploadStatus, setUploadStatus] = useState("");
 
 	const { data: session } = useSession();
-	const userData = {
-		email: session?.user?.email,
-		name: session?.user?.name,
-	};
-
 	const isDopy = session?.user.role === "dopy";
 	const [event, setEvent] = useState<string | null>(null);
 
@@ -95,10 +90,10 @@ export default function Profile({
 						{!isDopy && (
 							<>
 								<p className="m-1">
-									<b>Name:</b> {userData.name}
+									<b>Name:</b> {session?.user.name}
 								</p>
 								<p className="m-1">
-									<b>Email:</b> {userData.email}
+									<b>Email:</b> {session?.user.email}
 								</p>
 							</>
 						)}
