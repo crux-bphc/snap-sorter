@@ -36,14 +36,9 @@ export default function Profile({
 
 	const { data: session } = useSession();
 	const isDopy = session?.user.role === "dopy";
-	const [event, setEvent] = useState<string | null>(null);
 
 	const handleImageUpload = async function () {
 		const fd = new FormData();
-		if (isDopy) {
-			if (event === null) return;
-			fd.append("event", event);
-		}
 		for (const file of images) {
 			fd.append("files[]", file);
 		}
@@ -103,14 +98,11 @@ export default function Profile({
 						<Stack align="center" className="py-5">
 							{isDopy && (
 								<Select
-									error={event === null}
-									placeholder="Select event"
+									placeholder="Event"
 									data={events.map((event) => ({
 										value: event.id,
 										label: event.name,
 									}))}
-									value={event}
-									onChange={setEvent}
 								/>
 							)}
 							<Group position="center">
@@ -118,7 +110,7 @@ export default function Profile({
 									type="submit"
 									color="green"
 									onClick={handleImageUpload}
-									disabled={images.length === 0 || (isDopy && event === null)}>
+									disabled={images.length === 0}>
 									Upload
 								</Button>
 								<Button
@@ -128,7 +120,7 @@ export default function Profile({
 										setImages([]);
 										setUploadStatus("");
 									}}
-									disabled={images.length === 0 || (isDopy && event === null)}>
+									disabled={images.length === 0}>
 									Reset
 								</Button>
 							</Group>

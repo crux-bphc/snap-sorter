@@ -23,7 +23,6 @@ export default async function handler(
 		return res.status(401).send("Unauthorized");
 	}
 
-	const isDopy = session.user.role === "dopy";
 	let fileIds: string[] = [];
 
 	// TODO: Add max file size
@@ -38,36 +37,24 @@ export default async function handler(
 		filename: (name, ext, part, form) => {
 			const fileId = crypto.randomUUID();
 			fileIds.push(fileId);
-			return `${isDopy ? "dopy" : session.user.id}_${fileId}${ext}`;
+			return `${session.user.id}_${fileId}${ext}`;
 		},
 	});
 
 	try {
 		// formidable discards files if uploadDir does not exist
 		mkdirSync(`./uploads/`, { recursive: true });
-		const [fields, _] = await form.parse(req);
+		await form.parse(req);
 
 		for (const fileId of fileIds) {
-			if (isDopy) {
-				await prisma.dopyImage.create({
-					data: {
-						id: fileId,
-						event: {
-							// formidable makes everything an array
-							connect: { id: fields.event[0] },
-						},
+			await prisma.image.create({
+				data: {
+					id: fileId,
+					owner: {
+						connect: { id: session.user.id },
 					},
-				});
-			} else {
-				await prisma.image.create({
-					data: {
-						id: fileId,
-						owner: {
-							connect: { id: session.user.id },
-						},
-					},
-				});
-			}
+				},
+			});
 		}
 
 		res.status(200).send("OK");
