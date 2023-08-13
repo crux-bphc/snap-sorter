@@ -13,29 +13,16 @@ import {
 	ActionIcon,
 	Alert,
 	Stack,
-	Select,
 } from "@mantine/core";
 import { Dropzone, FileWithPath } from "@mantine/dropzone";
 import { Icon } from "@iconify/react";
 import { useSession } from "next-auth/react";
-import { prisma } from "../api/auth/[...nextauth]";
-import { InferGetServerSidePropsType } from "next";
 
-export const getServerSideProps = async () => {
-	const events = await prisma.event.findMany();
-	return {
-		props: { events },
-	};
-};
-
-export default function Profile({
-	events,
-}: InferGetServerSidePropsType<typeof getServerSideProps>) {
+export default function Profile() {
 	const [images, setImages] = useState<FileWithPath[]>([]);
 	const [uploadStatus, setUploadStatus] = useState("");
 
 	const { data: session } = useSession();
-	const isDopy = session?.user.role === "dopy";
 
 	const handleImageUpload = async function () {
 		const fd = new FormData();
@@ -79,32 +66,17 @@ export default function Profile({
 			<main className="px-10 py-7">
 				<div className="container mx-auto flex flex-col text-center">
 					<section>
-						<h1 className="my-2 text-3xl">
-							{!isDopy ? "Profile" : "Image Upload"}
-						</h1>
-						{!isDopy && (
-							<>
-								<p className="m-1">
-									<b>Name:</b> {session?.user.name}
-								</p>
-								<p className="m-1">
-									<b>Email:</b> {session?.user.email}
-								</p>
-							</>
-						)}
+						<h1 className="my-2 text-3xl">Profile</h1>
+						<p className="m-1">
+							<b>Name:</b> {session?.user.name}
+						</p>
+						<p className="m-1">
+							<b>Email:</b> {session?.user.email}
+						</p>
 					</section>
 
 					<section>
 						<Stack align="center" className="py-5">
-							{isDopy && (
-								<Select
-									placeholder="Event"
-									data={events.map((event) => ({
-										value: event.id,
-										label: event.name,
-									}))}
-								/>
-							)}
 							<Group position="center">
 								<Button
 									type="submit"
