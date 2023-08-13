@@ -89,8 +89,8 @@ model DopyImage {
 }
 
 model Tag {
-  id     String      @id @unique
-  value  String
+  id     String      @id @default(uuid())
+  value  String      @unique
   images DopyImage[]
 
   @@map("tags")
