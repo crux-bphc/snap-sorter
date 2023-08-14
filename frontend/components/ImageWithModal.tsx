@@ -18,11 +18,13 @@ import { useDisclosure } from "@mantine/hooks";
 import { useState } from "react";
 
 type Props = {
+	id: string;
 	imageUrl: string;
 	tagsFromDatabase: string[];
 };
 
 export default function ImagePreviewModal({
+	id,
 	imageUrl,
 	tagsFromDatabase,
 }: Props) {
@@ -31,7 +33,35 @@ export default function ImagePreviewModal({
 	const [newTag, setNewTag] = useState("");
 
 	async function handleUpdateTags() {
-		console.log(tags);
+		const add = [];
+		const remove = [];
+
+		for (const tag of tags) {
+			if (!tagsFromDatabase.includes(tag)) {
+				add.push(tag);
+			}
+		}
+
+		for (const tag of tagsFromDatabase) {
+			if (!tags.includes(tag)) {
+				remove.push(tag);
+			}
+		}
+
+		const rawResponse = await fetch("/api/updateTags", {
+			method: "POST",
+			headers: {
+				Accept: "application/json",
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify({
+				image: id,
+				add,
+				remove,
+			}),
+		});
+		const response = await rawResponse.text();
+		console.log(response);
 	}
 
 	return (

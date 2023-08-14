@@ -11,9 +11,9 @@ export default function Search() {
 	const [uid, setUid] = useState("");
 	const [events, setEvents] = useState<string[]>([]);
 	const [eventYear, setEventYear] = useState<Date | null>(new Date());
-	const [images, setImages] = useState<{ imageUrl: string; tags: string[] }[]>(
-		[]
-	);
+	const [images, setImages] = useState<
+		{ id: string; imageUrl: string; tags: string[] }[]
+	>([]);
 
 	const eventsFromDatabase = [
 		{ value: "1", label: "Atmos" },
@@ -29,6 +29,7 @@ export default function Search() {
 
 		setImages([
 			{
+				id: "1",
 				imageUrl:
 					"https://images.unsplash.com/photo-1538991383142-36c4edeaffde?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1771&q=80",
 				tags: ["CSA", "A7"],
@@ -36,9 +37,14 @@ export default function Search() {
 		]);
 	}
 
-	const previews = images.map(({ imageUrl, tags }, index) => {
+	const previews = images.map(({ id, imageUrl, tags }, index) => {
 		return (
-			<ImageWithModal key={index} imageUrl={imageUrl} tagsFromDatabase={tags} />
+			<ImageWithModal
+				key={index}
+				id={id}
+				imageUrl={imageUrl}
+				tagsFromDatabase={tags}
+			/>
 		);
 	});
 
