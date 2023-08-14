@@ -86,7 +86,7 @@ export default function ImagePreviewModal({
 						<Group position="center" className="mt-2">
 							{tags.map((tag, badgeIndex) => (
 								<Badge
-									className="m-1 capitalize"
+									className="m-1 normal-case"
 									key={badgeIndex}
 									rightSection={
 										<ActionIcon
