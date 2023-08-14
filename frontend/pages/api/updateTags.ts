@@ -1,5 +1,7 @@
 // Updates tags for a DopyImage
-// Note: invalid tags in remove[] are silently ignored
+// Note:
+// - Invalid tags in remove[] are silently ignored
+// - Tags in add[] are created if not found
 import type { NextApiRequest, NextApiResponse } from "next";
 import { getServerSession } from "next-auth/next";
 import { authOptions, prisma } from "./auth/[...nextauth]";
@@ -33,19 +35,31 @@ export default async function handler(
 			return res.status(404).send(`Image ${req.body.image} not found`);
 		}
 
-		for (const tag of req.body.add) {
-			const tagRecord = await prisma.tag.findUnique({ where: { id: tag } });
-			if (!tagRecord) {
-				return res.status(404).send(`Tag ${tag} not found`);
+		const addIds = [];
+		const removeIds = [];
+
+		for (const tag of req.body.remove) {
+			const tagRecord = await prisma.tag.findUnique({ where: { value: tag } });
+			if (tagRecord) {
+				removeIds.push(tagRecord.id);
 			}
+		}
+
+		for (const tag of req.body.add) {
+			const tagRecord = await prisma.tag.upsert({
+				where: { value: tag },
+				update: {},
+				create: { value: tag },
+			});
+			addIds.push(tagRecord.id);
 		}
 
 		await prisma.dopyImage.update({
 			where: { id: req.body.image },
 			data: {
 				tags: {
-					disconnect: req.body.remove.map((id) => ({ id })),
-					connect: req.body.add.map((id) => ({ id })),
+					disconnect: removeIds.map((id) => ({ id })),
+					connect: addIds.map((id) => ({ id })),
 				},
 			},
 		});
