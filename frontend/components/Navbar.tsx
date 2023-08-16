@@ -7,6 +7,25 @@ import Link from "next/link";
 
 export default function Navbar() {
 	const { data: session } = useSession();
+
+	const protectedRoutes = [
+		{
+			name: "profile",
+			path: "/app/profile",
+		},
+		{
+			name: "search",
+			path: "/app/search",
+		},
+	];
+
+	const unprotectedRoutes = [
+		{
+			name: "announcements",
+			path: "/announcements",
+		},
+	];
+
 	return (
 		<nav className="flex items-center justify-between px-10">
 			{/* TODO: Add crux logo here for home route */}
@@ -14,36 +33,29 @@ export default function Navbar() {
 				Logo
 			</Anchor>
 			<ul className="flex list-none px-0">
-				<li className="mx-2">
-					<Button
-						component={Link}
-						href={"/announcements"}
-						className="capitalize">
-						announcements
-					</Button>
-				</li>
+				{unprotectedRoutes.map((route) => (
+					<li className="mx-2">
+						<Button component={Link} href={route.path} className="capitalize">
+							{route.name}
+						</Button>
+					</li>
+				))}
 				{session?.user && (
 					<>
-						<li className="mx-2">
-							<Button
-								component={Link}
-								href={"/app/profile"}
-								className=" capitalize">
-								profile
-							</Button>
-						</li>
-						<li className="mx-2">
-							<Button
-								component={Link}
-								href={"/app/search"}
-								className=" capitalize">
-								search
-							</Button>
-						</li>
+						{protectedRoutes.map((route) => (
+							<li className="mx-2">
+								<Button
+									component={Link}
+									href={route.path}
+									className="capitalize">
+									{route.name}
+								</Button>
+							</li>
+						))}
 						<li className="mx-2">
 							<Button
 								onClick={() => signOut({ callbackUrl: "/login" })}
-								className=" capitalize">
+								className="capitalize">
 								logout
 							</Button>
 						</li>
