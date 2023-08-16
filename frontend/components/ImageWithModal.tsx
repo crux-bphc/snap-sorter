@@ -120,7 +120,9 @@ export default function ImagePreviewModal({
 									type="button"
 									disabled={newTag.length === 0}
 									onClick={() => {
-										setTags([...tags, newTag]);
+										if (!tags.includes(newTag)) {
+											setTags([...tags, newTag]);
+										}
 										setNewTag("");
 									}}>
 									Create tag
