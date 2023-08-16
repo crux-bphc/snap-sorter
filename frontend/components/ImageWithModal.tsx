@@ -12,6 +12,7 @@ import {
 	Group,
 	Image,
 	Modal,
+	Stack,
 	TextInput,
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
@@ -105,22 +106,24 @@ export default function ImagePreviewModal({
 							))}
 						</Group>
 
-						<Group position="center" className="py-2">
+						<Stack align="center" className="my-2">
 							<TextInput
+								className="mt-4"
 								value={newTag}
 								placeholder="New tag"
 								onChange={(event) => setNewTag(event.currentTarget.value)}
 							/>
-							<Button
-								type="button"
-								disabled={newTag.length === 0}
-								onClick={() => setTags([...tags, newTag])}>
-								Create tag
-							</Button>
-							<Button type="button" onClick={handleUpdateTags}>
-								Update tags
-							</Button>
-						</Group>
+							<Group position="center" className="px-5" noWrap>
+								<Button
+									type="button"
+									disabled={newTag.length === 0}
+									onClick={() => setTags([...tags, newTag])}>
+									Create tag
+								</Button>
+								<Button type="button" onClick={handleUpdateTags}>
+									Update tags
+								</Button>
+							</Group>
 					</div>
 				</section>
 			</Modal>
