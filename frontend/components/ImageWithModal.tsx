@@ -7,6 +7,7 @@
 import { Icon } from "@iconify/react";
 import {
 	ActionIcon,
+	Alert,
 	Badge,
 	Button,
 	Group,
@@ -32,6 +33,7 @@ export default function ImagePreviewModal({
 	const [opened, { open, close }] = useDisclosure(false);
 	const [tags, setTags] = useState(tagsFromDatabase);
 	const [newTag, setNewTag] = useState("");
+	const [updateStatus, setUpdateStatus] = useState("");
 
 	async function handleUpdateTags() {
 		const add = [];
@@ -49,7 +51,7 @@ export default function ImagePreviewModal({
 			}
 		}
 
-		const rawResponse = await fetch("/api/updateTags", {
+		const response = await fetch("/api/updateTags", {
 			method: "POST",
 			headers: {
 				Accept: "application/json",
@@ -61,8 +63,8 @@ export default function ImagePreviewModal({
 				remove,
 			}),
 		});
-		const response = await rawResponse.text();
-		console.log(response);
+
+		setUpdateStatus(response.ok ? "success" : "failure");
 	}
 
 	return (
@@ -117,13 +119,41 @@ export default function ImagePreviewModal({
 								<Button
 									type="button"
 									disabled={newTag.length === 0}
-									onClick={() => setTags([...tags, newTag])}>
+									onClick={() => {
+										setTags([...tags, newTag]);
+										setNewTag("");
+									}}>
 									Create tag
 								</Button>
 								<Button type="button" onClick={handleUpdateTags}>
 									Update tags
 								</Button>
 							</Group>
+							{updateStatus === "success" && (
+								<Alert
+									className="px-5 pt-5"
+									icon={<Icon icon="mdi:check-circle-outline" />}
+									title="Updated successfully!"
+									color="green"
+									radius="md"
+									withCloseButton
+									onClose={() => setUpdateStatus("")}>
+									{}
+								</Alert>
+							)}
+							{updateStatus === "failure" && (
+								<Alert
+									className="px-5 pt-5"
+									icon={<Icon icon="mdi:alert-circle-outline" />}
+									title="Tag update failed!"
+									color="red"
+									radius="md"
+									withCloseButton
+									onClose={() => setUpdateStatus("")}>
+									{}
+								</Alert>
+							)}
+						</Stack>
 					</div>
 				</section>
 			</Modal>
