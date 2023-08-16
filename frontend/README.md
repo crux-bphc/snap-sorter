@@ -6,8 +6,8 @@
 
 #### Components
 
-- [ ] Navbar
-  - [ ] Logo which takes to `search` page when logged in else to `login`
+- [x] Navbar
+  - [x] Logo which takes to `search` page when logged in else to `login`
   - [x] Links to each page (profile, search, announcements)
   - [x] Make it dynamic when showing the pages i.e., do not display announcements route when on announcements page, show other routes only when logged in.
 - [ ] Footer
@@ -20,7 +20,7 @@
 - [x] Login page
   - [x] Login button which initiates the oauth flow
 - [x] Announcements
-  - [ ] Integrate with backend
+  - [x] Integrate with backend
   - [x] Get data from announcements endpoint and display sorted by latest
 - [x] Profile
   - [x] Dropzone from mantine to collect images
@@ -42,7 +42,7 @@
 
 #### Endpoints
 
-- [ ] Announcements
+- [x] Announcements
   - Get announcements from DB
 - [x] Store images
   - Take the images and dump them in some folder called `/temp/images` as `studentuid_imagename.extension`
@@ -52,21 +52,22 @@
   - Return images from the `Unknown schema joined with Dopy Image` table with tags
 - [x] Auth
   - Nextauth will do the needful (more deep dive on what exactly is happening might be needed)
-- [ ] Update tags for a given image id
+- [x] Update tags for a given image id
   - Endpoint will be a `PATCH` request which takes image id and the updated tags and updates them in the db.
 
 #### Database
 
 - [x] Prisma or Drizzle with postgresql
-- [ ] Announcement schema - {uuid, title, description, created at time stamp}
+- [x] Announcement schema - {uuid, title, description, created at time stamp}
 - [x] Upload Image - {uuid, fk to student uid, image path}
-- [ ] Some Unknown schema to store tagged image - {fk to student uid, image id}
-- [ ] Dopy Image - {uuid, image path, event name, tags}
+- [x] Tag - {uuid, tag value, fk to image uids}
+- [x] Event - {uuid, event name, fk to image uids}
+- [x] Dopy Image - {uuid, image path, fk to event uid, fk to tag uids, fk to tagged student uids}
 
 ### Config & Misc
 
-- [ ] Docker files
-  - [ ] Production
+- [x] Docker files
+  - [x] Production
   - [x] Development
 - [x] Config
   - [x] Prettier
