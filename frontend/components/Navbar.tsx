@@ -36,9 +36,9 @@ export default function Navbar() {
 			</Anchor>
 			<ul className="flex list-none px-0">
 				{unprotectedRoutes.map(
-					(route) =>
+					(route, index) =>
 						router.pathname !== route.path && (
-							<li className="mx-2">
+							<li key={index} className="mx-2">
 								<Button
 									component={Link}
 									href={route.path}
@@ -51,9 +51,9 @@ export default function Navbar() {
 				{session?.user && (
 					<>
 						{protectedRoutes.map(
-							(route) =>
+							(route, index) =>
 								router.pathname !== route.path && (
-									<li className="mx-2">
+									<li key={index} className="mx-2">
 										<Button
 											component={Link}
 											href={route.path}
