@@ -79,7 +79,7 @@ model Announcement {
 }
 
 model DopyImage {
-  id          String @id @unique
+  filePath    String @id @unique
   event       Event  @relation(fields: [eventId], references: [id])
   tags        Tag[]
   taggedUsers User[]
@@ -97,7 +97,7 @@ model Tag {
 }
 
 model Event {
-  id     String      @id @unique
+  id     String      @id @default(uuid())
   name   String
   images DopyImage[]
 
