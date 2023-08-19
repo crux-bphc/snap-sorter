@@ -23,6 +23,16 @@ export default async function handler(
 							id: atmosRecord?.id,
 						},
 					},
+					taggedUsers: {
+						connect: [
+							{
+								email: "f20210264@hyderabad.bits-pilani.ac.in",
+							},
+							{
+								email: "f20220022@hyderabad.bits-pilani.ac.in",
+							},
+						],
+					},
 				},
 			});
 		}
