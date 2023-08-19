@@ -38,7 +38,7 @@ export default function Search({
 
 	// TODO: Finish handleSearch
 	async function handleSearch() {
-		const response = await fetch("/api/searchImages", {
+		const userImagesResponse = await fetch("/api/searchImages", {
 			method: "POST",
 			headers: {
 				Accept: "application/json",
@@ -50,8 +50,23 @@ export default function Search({
 				uid,
 			}),
 		});
+		const { userImages } = await userImagesResponse.json();
 
-		console.log(await response.json());
+		const arr = [];
+		for (const image of userImages.flat()) {
+			const imageResponse = await fetch("/api/getImage", {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify({
+					filePath: image.filePath,
+				}),
+			});
+			const imageUrl = URL.createObjectURL(await imageResponse.blob());
+			arr.push({ id: image.filePath, imageUrl, tags: [] });
+		}
+		setImages(arr);
 	}
 
 	const previews = images.map(({ id, imageUrl, tags }, index) => {
