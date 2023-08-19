@@ -5,20 +5,33 @@ import { Button, Group, MultiSelect, TextInput } from "@mantine/core";
 import { useState } from "react";
 import { YearPickerInput } from "@mantine/dates";
 import ImageWithModal from "@/components/ImageWithModal";
+import { prisma } from "../api/auth/[...nextauth]";
+import { InferGetServerSidePropsType } from "next";
+
+export const getServerSideProps = async () => {
+	const events = await prisma.event.findMany();
+
+	return {
+		props: {
+			events: JSON.parse(
+				JSON.stringify(
+					events.map((event) => ({ value: event.id, label: event.name }))
+				)
+			),
+		},
+	};
+};
 
 // TODO: Make the UI better for larger screens
-export default function Search() {
+export default function Search({
+	events,
+}: InferGetServerSidePropsType<typeof getServerSideProps>) {
 	const [uid, setUid] = useState("");
-	const [events, setEvents] = useState<string[]>([]);
+	const [selectedEvents, setSelectedEvents] = useState<string[]>([]);
 	const [eventYear, setEventYear] = useState<Date | null>(new Date());
 	const [images, setImages] = useState<
 		{ id: string; imageUrl: string; tags: string[] }[]
 	>([]);
-
-	const eventsFromDatabase = [
-		{ value: "1", label: "Atmos" },
-		{ value: "2", label: "Pearl" },
-	];
 
 	// TODO: Finish handleSearch
 	async function handleSearch() {
@@ -64,11 +77,11 @@ export default function Search() {
 								withAsterisk
 							/>
 							<MultiSelect
-								data={eventsFromDatabase}
+								data={events}
 								placeholder="Pick events"
 								label="Events"
-								onChange={setEvents}
-								value={events}
+								onChange={setSelectedEvents}
+								value={selectedEvents}
 								clearButtonProps={{ "aria-label": "Clear selection" }}
 								searchable
 								clearable
