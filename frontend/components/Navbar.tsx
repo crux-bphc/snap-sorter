@@ -29,7 +29,7 @@ export default function Navbar() {
 	];
 
 	return (
-		<nav className="flex items-center justify-between px-10">
+		<nav className="flex items-center justify-center px-10 sm:justify-end">
 			{/* TODO: Add crux logo here for home route */}
 			<ul className="flex list-none px-0">
 				{router.pathname !== "/login" && session?.user === undefined && (
