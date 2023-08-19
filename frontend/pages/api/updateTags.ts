@@ -29,7 +29,7 @@ export default async function handler(
 
 	try {
 		const imageRecord = await prisma.dopyImage.findUnique({
-			where: { id: req.body.image },
+			where: { filePath: req.body.image },
 		});
 		if (!imageRecord) {
 			return res.status(404).send(`Image ${req.body.image} not found`);
@@ -55,7 +55,7 @@ export default async function handler(
 		}
 
 		await prisma.dopyImage.update({
-			where: { id: req.body.image },
+			where: { filePath: req.body.image },
 			data: {
 				tags: {
 					disconnect: removeIds.map((id) => ({ id })),
