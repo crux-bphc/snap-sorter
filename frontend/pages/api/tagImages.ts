@@ -31,7 +31,7 @@ export default async function handler(
 	try {
 		for (const { image, users } of req.body.tags) {
 			const imageRecord = await prisma.dopyImage.findUnique({
-				where: { id: image },
+				where: { filePath: image },
 			});
 			if (!imageRecord) {
 				return res.status(404).send(`Image ${image} not found`);
@@ -45,7 +45,7 @@ export default async function handler(
 					return res.status(404).send(`User ${user} not found`);
 				}
 				await prisma.dopyImage.update({
-					where: { id: image },
+					where: { filePath: image },
 					data: { taggedUsers: { connect: { id: user } } },
 				});
 			}
