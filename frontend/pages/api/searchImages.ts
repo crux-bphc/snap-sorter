@@ -36,7 +36,7 @@ export default async function handler(
 				where: {
 					eventId: event,
 					taggedUsers: {
-						every: {
+						some: {
 							email: `${uid}@hyderabad.bits-pilani.ac.in`,
 						},
 					},
