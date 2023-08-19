@@ -35,19 +35,20 @@ export default function Search({
 
 	// TODO: Finish handleSearch
 	async function handleSearch() {
-		console.log(uid);
-		console.log(events);
-		// TODO: Handle events being empty
-		console.log(eventYear);
-
-		setImages([
-			{
-				id: "1",
-				imageUrl:
-					"https://images.unsplash.com/photo-1538991383142-36c4edeaffde?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1771&q=80",
-				tags: ["CSA", "A7"],
+		const response = await fetch("/api/searchImages", {
+			method: "POST",
+			headers: {
+				Accept: "application/json",
+				"Content-Type": "application/json",
 			},
-		]);
+			body: JSON.stringify({
+				events: selectedEvents,
+				eventYear,
+				uid,
+			}),
+		});
+
+		console.log(await response.json());
 	}
 
 	const previews = images.map(({ id, imageUrl, tags }, index) => {
