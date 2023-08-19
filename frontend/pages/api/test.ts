@@ -8,7 +8,7 @@ export default async function handler(
 ) {
 	try {
 		await prisma.event.create({
-			data: { name: "atmos" },
+			data: { name: "atmos", year: 2023 },
 		});
 		const atmosRecord = await prisma.event.findFirst({
 			where: { name: "atmos" },
