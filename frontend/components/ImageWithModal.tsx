@@ -107,7 +107,7 @@ export default function ImagePreviewModal({
 										}
 										setNewTag("");
 									}}>
-									Create tag
+									Add tag
 								</Button>
 								<Button type="button" onClick={handleUpdateTags}>
 									Update tags
