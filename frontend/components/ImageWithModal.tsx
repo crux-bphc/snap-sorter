@@ -73,7 +73,6 @@ export default function ImagePreviewModal({
 				alt={imageUrl}
 				src={imageUrl}
 				onClick={open}
-				imageProps={{ onLoad: () => URL.revokeObjectURL(imageUrl) }}
 				className="cursor-pointer"
 			/>
 
@@ -83,7 +82,6 @@ export default function ImagePreviewModal({
 						alt={imageUrl}
 						src={imageUrl}
 						onClick={open}
-						imageProps={{ onLoad: () => URL.revokeObjectURL(imageUrl) }}
 					/>
 					<div>
 						<Group position="center" className="mt-2">
