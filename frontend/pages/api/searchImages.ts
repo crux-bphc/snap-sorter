@@ -7,7 +7,6 @@ interface ExtendedNextApiRequest extends NextApiRequest {
 	body: {
 		uid: string;
 		events: string[];
-		eventYear: string;
 	};
 }
 
@@ -26,7 +25,7 @@ export default async function handler(
 	}
 
 	// TODO: Handle req body here
-	const { events, eventYear, uid } = req.body;
+	const { events, uid } = req.body;
 	console.log(req.body);
 
 	try {
