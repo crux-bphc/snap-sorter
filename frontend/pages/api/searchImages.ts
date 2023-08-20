@@ -4,9 +4,9 @@ import { authOptions, prisma } from "./auth/[...nextauth]";
 import { DopyImage } from "@prisma/client";
 
 interface ExtendedNextApiRequest extends NextApiRequest {
-	body: {
+	query: {
 		uid: string;
-		events: string[];
+		events: string;
 	};
 }
 
@@ -16,7 +16,7 @@ export default async function handler(
 ) {
 	const session = await getServerSession(req, res, authOptions);
 
-	if (req.method !== "POST") {
+	if (req.method !== "GET") {
 		return res.status(405).send(`Method ${req.method} Not Allowed`);
 	}
 
@@ -24,9 +24,9 @@ export default async function handler(
 		return res.status(401).send("Unauthorized");
 	}
 
-	// TODO: Handle req body here
-	const { events, uid } = req.body;
-	console.log(req.body);
+	// TODO: Handle req params here
+	const { uid } = req.query;
+	const events: string[] = JSON.parse(req.query.events);
 
 	try {
 		const userImages: DopyImage[][] = [];

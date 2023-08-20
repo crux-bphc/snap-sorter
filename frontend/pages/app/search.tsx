@@ -28,18 +28,9 @@ export default function Search() {
 	}
 
 	async function handleSearch() {
-		const userImagesResponse = await fetch("/api/searchImages", {
-			method: "POST",
-			headers: {
-				Accept: "application/json",
-				"Content-Type": "application/json",
-			},
-			body: JSON.stringify({
-				events: selectedEvents,
-				eventYear,
-				uid,
-			}),
-		});
+		const userImagesResponse = await fetch(
+			`/api/searchImages?uid=${uid}&events=${JSON.stringify(selectedEvents)}`
+		);
 		const { userImages } = await userImagesResponse.json();
 
 		const arr = [];
