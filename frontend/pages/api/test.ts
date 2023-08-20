@@ -8,8 +8,29 @@ export default async function handler(
 ) {
 	try {
 		await prisma.event.create({
-			data: { name: "atmos", year: 2023 },
+			data: {
+				name: "atmos",
+				eventYear: {
+					create: {
+						year: 2023,
+					},
+				},
+			},
 		});
+
+		await prisma.event.create({
+			data: { name: "atmos", eventYear: { create: { year: 2022 } } },
+		});
+
+		await prisma.event.create({
+			data: {
+				name: "pearl",
+				eventYear: {
+					connectOrCreate: { create: { year: 2023 }, where: { year: 2023 } },
+				},
+			},
+		});
+
 		const atmosRecord = await prisma.event.findFirst({
 			where: { name: "atmos" },
 		});
@@ -27,9 +48,6 @@ export default async function handler(
 						connect: [
 							{
 								email: "f20210264@hyderabad.bits-pilani.ac.in",
-							},
-							{
-								email: "f20220022@hyderabad.bits-pilani.ac.in",
 							},
 						],
 					},
