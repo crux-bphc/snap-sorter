@@ -1,3 +1,9 @@
+// Reset and populate DB with test data
+// Pitfalls:
+// It does not handle the user auth tables
+// Start from a fresh docker volume (or run `pnpm prisma migrate reset`)
+// Then, login to the app once to create the user auth tables
+// You can then call the endpoint (any number of times) to reset and repopulate the DB
 import type { NextApiRequest, NextApiResponse } from "next";
 import { promises } from "fs";
 import { prisma } from "./auth/[...nextauth]";
@@ -7,6 +13,27 @@ export default async function handler(
 	res: NextApiResponse
 ) {
 	try {
+		// Delete all records
+		const tablenames = await prisma.$queryRaw<
+			Array<{ tablename: string }>
+		>`SELECT tablename FROM pg_tables WHERE schemaname='public'`;
+
+		const keep = [
+			"_prisma_migrations",
+			"accounts",
+			"sessions",
+			"users",
+			"verificationtokens",
+		];
+		const tables = tablenames
+			.map(({ tablename }) => tablename)
+			.filter((name) => !keep.includes(name))
+			.map((name) => `"public"."${name}"`)
+			.join(", ");
+
+		await prisma.$executeRawUnsafe(`TRUNCATE TABLE ${tables} CASCADE;`);
+
+		// Create test data
 		await prisma.event.create({
 			data: {
 				name: "atmos",
