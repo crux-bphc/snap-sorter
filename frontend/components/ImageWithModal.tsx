@@ -36,20 +36,8 @@ export default function ImagePreviewModal({
 	const [updateStatus, setUpdateStatus] = useState("");
 
 	async function handleUpdateTags() {
-		const add = [];
-		const remove = [];
-
-		for (const tag of tags) {
-			if (!tagsFromDatabase.includes(tag)) {
-				add.push(tag);
-			}
-		}
-
-		for (const tag of tagsFromDatabase) {
-			if (!tags.includes(tag)) {
-				remove.push(tag);
-			}
-		}
+		const add = tags.filter((tag) => !tagsFromDatabase.includes(tag));
+		const remove = tagsFromDatabase.filter((tag) => !tags.includes(tag));
 
 		const response = await fetch("/api/updateTags", {
 			method: "POST",
