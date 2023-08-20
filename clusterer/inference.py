@@ -29,6 +29,7 @@ class EmbeddingPipeline:
         DETECTOR = MTCNN(keep_all=True).eval()
         RESNET = FaceNet(embedding_size=embedding_size, use_default=default_resnet)
         
+        self.embedding_size = embedding_size
         self.detector = DETECTOR if detector is None else detector
         self.resnet = RESNET
         
