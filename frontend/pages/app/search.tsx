@@ -15,10 +15,7 @@ export const getServerSideProps = async () => {
 		props: {
 			events: JSON.parse(
 				JSON.stringify(
-					events.map((event) => ({
-						value: event.id,
-						label: `${event.name} ${event.year}`,
-					}))
+					events.map((event) => ({ value: event.id, label: event.name }))
 				)
 			),
 		},
