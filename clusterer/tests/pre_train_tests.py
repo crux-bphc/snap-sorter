@@ -1,1 +1,4 @@
-# file that will contain pre train tests to ensure expected working of model
+def test_pipeline_embedding_size(pipeline, image):
+    embedding = pipeline(image)
+    assert embedding.size == pipeline.embedding_size, \
+    "Output embedding size does not match Pipeline embedding size"
