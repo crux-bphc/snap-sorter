@@ -65,7 +65,11 @@ export default function Search({
 				}),
 			});
 			const imageUrl = URL.createObjectURL(await imageResponse.blob());
-			arr.push({ id: image.filePath, imageUrl, tags: [] });
+			arr.push({
+				id: image.filePath,
+				imageUrl,
+				tags: image.tags.map((tag: { id: string; value: string }) => tag.value),
+			});
 		}
 		setImages(arr);
 	}
