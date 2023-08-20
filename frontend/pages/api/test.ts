@@ -35,13 +35,24 @@ export default async function handler(
 			where: { name: "atmos" },
 		});
 		const files = await promises.readdir("./dopy/");
+
+		// Don't think about these
+		const tags = ["potato", "forest", "paste", "mint", "obsidian btw"];
+
 		for (const file of files) {
+			const randomTag = tags[Math.floor(Math.random() * tags.length)];
 			await prisma.dopyImage.create({
 				data: {
 					filePath: file,
 					event: {
 						connect: {
 							id: atmosRecord?.id,
+						},
+					},
+					tags: {
+						connectOrCreate: {
+							create: { value: randomTag },
+							where: { value: randomTag },
 						},
 					},
 					taggedUsers: {
