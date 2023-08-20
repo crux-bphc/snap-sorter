@@ -5,35 +5,28 @@ import { Button, Group, MultiSelect, TextInput } from "@mantine/core";
 import { useState } from "react";
 import { YearPickerInput } from "@mantine/dates";
 import ImageWithModal from "@/components/ImageWithModal";
-import { prisma } from "../api/auth/[...nextauth]";
-import { InferGetServerSidePropsType } from "next";
 
-export const getServerSideProps = async () => {
-	const events = await prisma.event.findMany();
-
-	return {
-		props: {
-			events: JSON.parse(
-				JSON.stringify(
-					events.map((event) => ({ value: event.id, label: event.name }))
-				)
-			),
-		},
-	};
+type Event = {
+	value: string;
+	label: string;
 };
 
-// TODO: Make the UI better for larger screens
-export default function Search({
-	events,
-}: InferGetServerSidePropsType<typeof getServerSideProps>) {
+export default function Search() {
 	const [uid, setUid] = useState("");
 	const [selectedEvents, setSelectedEvents] = useState<string[]>([]);
 	const [eventYear, setEventYear] = useState<Date | null>(new Date());
+	const [events, setEvents] = useState<Event[]>([]);
 	const [images, setImages] = useState<
 		{ id: string; imageUrl: string; tags: string[] }[]
 	>([]);
 
-	// TODO: Finish handleSearch
+	async function fetchEvents() {
+		const response = await fetch(`/api/events?eventYear=${eventYear}`);
+		// TODO: Handle errors
+		const availableEvents: Event[] = await response.json();
+		setEvents(availableEvents);
+	}
+
 	async function handleSearch() {
 		const userImagesResponse = await fetch("/api/searchImages", {
 			method: "POST",
