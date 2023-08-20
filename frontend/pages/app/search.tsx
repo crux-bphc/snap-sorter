@@ -104,6 +104,7 @@ export default function Search() {
 							</Group>
 							<MultiSelect
 								data={events}
+								disabled={events.length === 0}
 								placeholder="Pick events"
 								label="Events"
 								onChange={setSelectedEvents}
