@@ -85,6 +85,15 @@ export default function Search() {
 								required
 								withAsterisk
 							/>
+							<Group position="center" className="m-2">
+								<YearPickerInput
+									label="Event year"
+									value={eventYear}
+									onChange={setEventYear}
+									withAsterisk
+									maxDate={new Date()}
+								/>
+							</Group>
 							<MultiSelect
 								data={events}
 								placeholder="Pick events"
@@ -100,16 +109,11 @@ export default function Search() {
 						</article>
 						<article>
 							<Group position="center" className="m-2">
-								<YearPickerInput
-									label="Event year"
-									value={eventYear}
-									onChange={setEventYear}
-									withAsterisk
-									maxDate={new Date()}
-								/>
-							</Group>
-							<Group position="center">
-								<Button type="submit" color="green" onClick={handleSearch}>
+								<Button
+									type="submit"
+									color="green"
+									onClick={handleSearch}
+									disabled={selectedEvents.length === 0}>
 									Search
 								</Button>
 							</Group>
