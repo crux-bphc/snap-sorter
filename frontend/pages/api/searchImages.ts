@@ -40,6 +40,9 @@ export default async function handler(
 						},
 					},
 				},
+				include: {
+					tags: true,
+				},
 			});
 			userImages.push(images);
 		}
