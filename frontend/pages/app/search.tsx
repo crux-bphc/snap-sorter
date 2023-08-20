@@ -87,11 +87,11 @@ export default function Search({
 				<section className="mx-auto max-w-md px-10 py-4">
 					<form onSubmit={(event) => event.preventDefault()}>
 						<article>
-							{/* TODO: Regex validation for BITS UIDs */}
 							<TextInput
 								value={uid}
 								label="UID"
 								placeholder="fxxxxxxxx"
+								pattern="^f\d{8}$"
 								onChange={(event) => setUid(event.currentTarget.value)}
 								required
 								withAsterisk
