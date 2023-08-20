@@ -5,22 +5,41 @@ import { Button, Group, MultiSelect, TextInput } from "@mantine/core";
 import { useState } from "react";
 import { YearPickerInput } from "@mantine/dates";
 import ImageWithModal from "@/components/ImageWithModal";
+import { prisma } from "../api/auth/[...nextauth]";
+import { InferGetServerSidePropsType } from "next";
 
 type Event = {
 	value: string;
 	label: string;
 };
 
-export default function Search() {
+export const getServerSideProps = async () => {
+	const events = await prisma.event.findMany({
+		where: { year: new Date().getFullYear() },
+	});
+
+	return {
+		props: {
+			initialLoadEvents: events.map((event) => ({
+				value: event.id,
+				label: event.name,
+			})),
+		},
+	};
+};
+
+export default function Search({
+	initialLoadEvents,
+}: InferGetServerSidePropsType<typeof getServerSideProps>) {
 	const [uid, setUid] = useState("");
 	const [selectedEvents, setSelectedEvents] = useState<string[]>([]);
 	const [eventYear, setEventYear] = useState<Date | null>(new Date());
-	const [events, setEvents] = useState<Event[]>([]);
+	const [events, setEvents] = useState<Event[]>(initialLoadEvents);
 	const [images, setImages] = useState<
 		{ id: string; imageUrl: string; tags: string[] }[]
 	>([]);
 
-	async function fetchEvents() {
+	async function fetchEvents(eventYear: Date | null) {
 		const response = await fetch(`/api/events?eventYear=${eventYear}`);
 		// TODO: Handle errors
 		const availableEvents: Event[] = await response.json();
@@ -80,7 +99,10 @@ export default function Search() {
 								<YearPickerInput
 									label="Event year"
 									value={eventYear}
-									onChange={setEventYear}
+									onChange={(newDate) => {
+										setEventYear(newDate);
+										fetchEvents(newDate);
+									}}
 									withAsterisk
 									maxDate={new Date()}
 								/>
