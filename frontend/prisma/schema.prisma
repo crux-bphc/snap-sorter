@@ -97,10 +97,18 @@ model Tag {
 }
 
 model Event {
-  id     String      @id @default(uuid())
-  name   String
-  images DopyImage[]
-  year   Int
+  id        String      @id @default(uuid())
+  name      String
+  images    DopyImage[]
+  eventYear EventYear   @relation(fields: [year], references: [year])
+  year      Int
 
   @@map("events")
+}
+
+model EventYear {
+  year  Int     @id
+  Event Event[]
+
+  @@map("event_years")
 }
