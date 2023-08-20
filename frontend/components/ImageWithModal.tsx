@@ -78,11 +78,7 @@ export default function ImagePreviewModal({
 
 			<Modal centered opened={opened} onClose={close} size={"auto"}>
 				<section className="px-2 py-4 sm:flex sm:gap-x-2">
-					<Image
-						alt={imageUrl}
-						src={imageUrl}
-						onClick={open}
-					/>
+					<Image alt={imageUrl} src={imageUrl} onClick={open} />
 					<div>
 						<Group position="center" className="mt-2">
 							{tags.map((tag, badgeIndex) => (
