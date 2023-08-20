@@ -43,6 +43,7 @@ export default function Search({
 		const response = await fetch(`/api/events?eventYear=${eventYear}`);
 		// TODO: Handle errors
 		const availableEvents: Event[] = await response.json();
+		setSelectedEvents([]);
 		setEvents(availableEvents);
 	}
 
