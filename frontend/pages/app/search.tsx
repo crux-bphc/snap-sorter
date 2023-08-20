@@ -94,6 +94,14 @@ export default function Search() {
 									maxDate={new Date()}
 								/>
 							</Group>
+							<Group position="center">
+								<Button
+									type="submit"
+									onClick={fetchEvents}
+									disabled={uid.length === 0}>
+									Fetch Events
+								</Button>
+							</Group>
 							<MultiSelect
 								data={events}
 								placeholder="Pick events"
