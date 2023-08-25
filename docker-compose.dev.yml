@@ -12,16 +12,17 @@ services:
       - ./frontend/.env.development
     ports:
       - 3000:3000
-      - 5555:5555
     volumes:
       - ./frontend/pages:/app/pages
       - ./frontend/components:/app/components
       - ./frontend/styles:/app/styles
-      - ./images/uploads:/app/uploads
+      - ./uploads:/app/uploads
   db:
     image: postgres:latest
     container_name: snap-sorter-database-dev
     restart: always
+    ports:
+      - 5432:5432
     env_file:
       - ./frontend/.env.development
     volumes:

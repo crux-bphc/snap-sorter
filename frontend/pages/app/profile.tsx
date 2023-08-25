@@ -23,10 +23,6 @@ export default function Profile() {
 	const [uploadStatus, setUploadStatus] = useState("");
 
 	const { data: session } = useSession();
-	const userData = {
-		email: session?.user?.email,
-		name: session?.user?.name,
-	};
 
 	const handleImageUpload = async function () {
 		const fd = new FormData();
@@ -72,10 +68,10 @@ export default function Profile() {
 					<section>
 						<h1 className="my-2 text-3xl">Profile</h1>
 						<p className="m-1">
-							<b>Name:</b> {userData.name}
+							<b>Name:</b> {session?.user.name}
 						</p>
 						<p className="m-1">
-							<b>Email:</b> {userData.email}
+							<b>Email:</b> {session?.user.email}
 						</p>
 					</section>
 

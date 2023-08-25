@@ -7,31 +7,52 @@
 import { Icon } from "@iconify/react";
 import {
 	ActionIcon,
+	Alert,
 	Badge,
 	Button,
 	Group,
 	Image,
 	Modal,
+	Stack,
 	TextInput,
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { useState } from "react";
 
 type Props = {
+	id: string;
 	imageUrl: string;
 	tagsFromDatabase: string[];
 };
 
 export default function ImagePreviewModal({
+	id,
 	imageUrl,
 	tagsFromDatabase,
 }: Props) {
 	const [opened, { open, close }] = useDisclosure(false);
 	const [tags, setTags] = useState(tagsFromDatabase);
 	const [newTag, setNewTag] = useState("");
+	const [updateStatus, setUpdateStatus] = useState("");
 
 	async function handleUpdateTags() {
-		console.log(tags);
+		const add = tags.filter((tag) => !tagsFromDatabase.includes(tag));
+		const remove = tagsFromDatabase.filter((tag) => !tags.includes(tag));
+
+		const response = await fetch("/api/updateTags", {
+			method: "POST",
+			headers: {
+				Accept: "application/json",
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify({
+				image: id,
+				add,
+				remove,
+			}),
+		});
+
+		setUpdateStatus(response.ok ? "success" : "failure");
 	}
 
 	return (
@@ -40,23 +61,17 @@ export default function ImagePreviewModal({
 				alt={imageUrl}
 				src={imageUrl}
 				onClick={open}
-				imageProps={{ onLoad: () => URL.revokeObjectURL(imageUrl) }}
 				className="cursor-pointer"
 			/>
 
 			<Modal centered opened={opened} onClose={close} size={"auto"}>
 				<section className="px-2 py-4 sm:flex sm:gap-x-2">
-					<Image
-						alt={imageUrl}
-						src={imageUrl}
-						onClick={open}
-						imageProps={{ onLoad: () => URL.revokeObjectURL(imageUrl) }}
-					/>
+					<Image alt={imageUrl} src={imageUrl} onClick={open} />
 					<div>
 						<Group position="center" className="mt-2">
 							{tags.map((tag, badgeIndex) => (
 								<Badge
-									className="m-1 capitalize"
+									className="m-1 normal-case"
 									key={badgeIndex}
 									rightSection={
 										<ActionIcon
@@ -75,22 +90,54 @@ export default function ImagePreviewModal({
 							))}
 						</Group>
 
-						<Group position="center" className="py-2">
+						<Stack align="center" className="my-2">
 							<TextInput
+								className="mt-4"
 								value={newTag}
 								placeholder="New tag"
 								onChange={(event) => setNewTag(event.currentTarget.value)}
 							/>
-							<Button
-								type="button"
-								disabled={newTag.length === 0}
-								onClick={() => setTags([...tags, newTag])}>
-								Create tag
-							</Button>
-							<Button type="button" onClick={handleUpdateTags}>
-								Update tags
-							</Button>
-						</Group>
+							<Group position="center" className="px-5" noWrap>
+								<Button
+									type="button"
+									disabled={newTag.length === 0}
+									onClick={() => {
+										if (!tags.includes(newTag)) {
+											setTags([...tags, newTag]);
+										}
+										setNewTag("");
+									}}>
+									Add tag
+								</Button>
+								<Button type="button" onClick={handleUpdateTags}>
+									Update tags
+								</Button>
+							</Group>
+							{updateStatus === "success" && (
+								<Alert
+									className="px-5 pt-5"
+									icon={<Icon icon="mdi:check-circle-outline" />}
+									title="Updated successfully!"
+									color="green"
+									radius="md"
+									withCloseButton
+									onClose={() => setUpdateStatus("")}>
+									{}
+								</Alert>
+							)}
+							{updateStatus === "failure" && (
+								<Alert
+									className="px-5 pt-5"
+									icon={<Icon icon="mdi:alert-circle-outline" />}
+									title="Tag update failed!"
+									color="red"
+									radius="md"
+									withCloseButton
+									onClose={() => setUpdateStatus("")}>
+									{}
+								</Alert>
+							)}
+						</Stack>
 					</div>
 				</section>
 			</Modal>

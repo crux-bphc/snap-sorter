@@ -16,7 +16,6 @@ COPY types ./types
 COPY *.config.js .
 COPY *.config.ts .
 COPY tsconfig.json .
-COPY next-env.d.ts .
 COPY .env.production .env
 COPY prisma ./prisma
 
@@ -35,6 +34,10 @@ RUN adduser --system --uid 1001 nextjs
 COPY --from=build /app/public ./public
 COPY --from=build --chown=1001:1001 /app/.next/standalone ./
 COPY --from=build --chown=1001:1001 /app/.next/static ./.next/static 
+
+RUN mkdir -p /app/uploads
+RUN chown -R 1001:1001 /app/uploads
+RUN chmod -R 755 /app/uploads
 
 USER nextjs
 CMD ["node", "server.js"]

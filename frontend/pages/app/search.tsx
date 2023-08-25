@@ -5,40 +5,83 @@ import { Button, Group, MultiSelect, TextInput } from "@mantine/core";
 import { useState } from "react";
 import { YearPickerInput } from "@mantine/dates";
 import ImageWithModal from "@/components/ImageWithModal";
+import { prisma } from "../api/auth/[...nextauth]";
+import { InferGetServerSidePropsType } from "next";
 
-// TODO: Make the UI better for larger screens
-export default function Search() {
+type Event = {
+	value: string;
+	label: string;
+};
+
+export const getServerSideProps = async () => {
+	const events = await prisma.event.findMany({
+		where: { year: new Date().getFullYear() },
+	});
+
+	return {
+		props: {
+			initialLoadEvents: events.map((event) => ({
+				value: event.id,
+				label: event.name,
+			})),
+		},
+	};
+};
+
+export default function Search({
+	initialLoadEvents,
+}: InferGetServerSidePropsType<typeof getServerSideProps>) {
 	const [uid, setUid] = useState("");
-	const [events, setEvents] = useState<string[]>([]);
+	const [selectedEvents, setSelectedEvents] = useState<string[]>([]);
 	const [eventYear, setEventYear] = useState<Date | null>(new Date());
-	const [images, setImages] = useState<{ imageUrl: string; tags: string[] }[]>(
-		[]
-	);
+	const [events, setEvents] = useState<Event[]>(initialLoadEvents);
+	const [images, setImages] = useState<
+		{ id: string; imageUrl: string; tags: string[] }[]
+	>([]);
 
-	const eventsFromDatabase = [
-		{ value: "1", label: "Atmos" },
-		{ value: "2", label: "Pearl" },
-	];
-
-	// TODO: Finish handleSearch
-	async function handleSearch() {
-		console.log(uid);
-		console.log(events);
-		// TODO: Handle events being empty
-		console.log(eventYear);
-
-		setImages([
-			{
-				imageUrl:
-					"https://images.unsplash.com/photo-1538991383142-36c4edeaffde?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1771&q=80",
-				tags: ["CSA", "A7"],
-			},
-		]);
+	async function fetchEvents(eventYear: Date | null) {
+		const response = await fetch(`/api/events?eventYear=${eventYear}`);
+		// TODO: Handle errors
+		const availableEvents: Event[] = await response.json();
+		setSelectedEvents([]);
+		setEvents(availableEvents);
 	}
 
-	const previews = images.map(({ imageUrl, tags }, index) => {
+	async function handleSearch() {
+		const userImagesResponse = await fetch(
+			`/api/searchImages?uid=${uid}&events=${JSON.stringify(selectedEvents)}`
+		);
+		const { userImages } = await userImagesResponse.json();
+
+		const arr = [];
+		for (const image of userImages.flat()) {
+			const imageResponse = await fetch("/api/getImage", {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify({
+					filePath: image.filePath,
+				}),
+			});
+			const imageUrl = URL.createObjectURL(await imageResponse.blob());
+			arr.push({
+				id: image.filePath,
+				imageUrl,
+				tags: image.tags.map((tag: { id: string; value: string }) => tag.value),
+			});
+		}
+		setImages(arr);
+	}
+
+	const previews = images.map(({ id, imageUrl, tags }, index) => {
 		return (
-			<ImageWithModal key={index} imageUrl={imageUrl} tagsFromDatabase={tags} />
+			<ImageWithModal
+				key={index}
+				id={id}
+				imageUrl={imageUrl}
+				tagsFromDatabase={tags}
+			/>
 		);
 	});
 
@@ -48,21 +91,34 @@ export default function Search() {
 				<section className="mx-auto max-w-md px-10 py-4">
 					<form onSubmit={(event) => event.preventDefault()}>
 						<article>
-							{/* TODO: Regex validation for BITS UIDs */}
 							<TextInput
 								value={uid}
 								label="UID"
 								placeholder="fxxxxxxxx"
+								pattern="^f\d{8}$"
 								onChange={(event) => setUid(event.currentTarget.value)}
 								required
 								withAsterisk
 							/>
+							<Group position="center" className="m-2">
+								<YearPickerInput
+									label="Event year"
+									value={eventYear}
+									onChange={(newDate) => {
+										setEventYear(newDate);
+										fetchEvents(newDate);
+									}}
+									withAsterisk
+									maxDate={new Date()}
+								/>
+							</Group>
 							<MultiSelect
-								data={eventsFromDatabase}
+								data={events}
+								disabled={events.length === 0}
 								placeholder="Pick events"
 								label="Events"
-								onChange={setEvents}
-								value={events}
+								onChange={setSelectedEvents}
+								value={selectedEvents}
 								clearButtonProps={{ "aria-label": "Clear selection" }}
 								searchable
 								clearable
@@ -72,16 +128,11 @@ export default function Search() {
 						</article>
 						<article>
 							<Group position="center" className="m-2">
-								<YearPickerInput
-									label="Event year"
-									value={eventYear}
-									onChange={setEventYear}
-									withAsterisk
-									maxDate={new Date()}
-								/>
-							</Group>
-							<Group position="center">
-								<Button type="submit" color="green" onClick={handleSearch}>
+								<Button
+									type="submit"
+									color="green"
+									onClick={handleSearch}
+									disabled={selectedEvents.length === 0}>
 									Search
 								</Button>
 							</Group>
