@@ -1,22 +1,22 @@
 version: "3.8"
 services:
-  frontend:
-    container_name: snap-sorter-frontend-prod
+  next-app:
+    container_name: snap-sorter-app-prod
+    image: snap-sorter-app-prod
     build:
-      context: ./frontend
+      context: ./next-app
       dockerfile: prod.Dockerfile
     depends_on:
       - db
     env_file:
-      - ./frontend/.env.production
+      - ./next-app/.env.production
     ports:
       - 3000:3000
     volumes:
-      - ./frontend/pages:/app/pages
-      - ./frontend/components:/app/components
-      - ./frontend/styles:/app/styles
+      - ./next-app/pages:/app/pages
+      - ./next-app/components:/app/components
+      - ./next-app/styles:/app/styles
       - ./uploads:/app/uploads
-    image: snap-sorter-frontend-prod
   db:
     image: postgres:latest
     container_name: snap-sorter-database-prod
@@ -24,7 +24,7 @@ services:
     ports:
       - 5432:5432
     env_file:
-      - ./frontend/.env.production
+      - ./next-app/.env.production
     volumes:
       - data:/var/lib/postgresql/data
 volumes:
