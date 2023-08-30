@@ -58,8 +58,8 @@ def create_transform(img_height: int, img_width: int, _mean: list[float]=None,
     Returns:
         transform (Compose): Composition of image transforms
     """
-    mean = [0.5, 0.5, 0.5] if _mean is None else _mean
-    std = [0.5, 0.5, 0.5] if _std is None else _std
+    mean = [0.485, 0.456, 0.406] if _mean is None else _mean
+    std = [0.229, 0.224, 0.225] if _std is None else _std
     transform = transforms.Compose([
     transforms.Resize((img_height, img_width)),
     transforms.ToTensor(),
