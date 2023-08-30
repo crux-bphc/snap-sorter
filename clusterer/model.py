@@ -32,6 +32,7 @@ class FaceNet:
             self.n_bn_features = self.model.last_bn.num_features
             self.model.last_bn = nn.BatchNorm1d(embedding_size)
         self.model.classify = False
+        self.model.eval()
     
     def forward(self, x: torch.Tensor):
         """
@@ -102,7 +103,7 @@ class FaceNet:
         facenet.model.classify = False
         return facenet
     
-    def train(self, train_data: TripletDataset, batch_size : int, n_epochs : int, learning_rate : float):
+    def train(self, train_data: TripletDataset, batch_size : int, n_epochs : int, learning_rate : float, frozen: int = 250):
         """
         Trains a model on given data
 
@@ -122,6 +123,15 @@ class FaceNet:
         optimizer = optim.Adam(self.model.parameters(), lr=learning_rate)
 
         self.model.train()
+
+        counter = 0
+        for param in self.model.parameters():
+            if counter < frozen:
+                param.requires_grad=False
+            elif counter >= frozen:
+                param.requires_grad=True
+            counter+=1
+        
         start = time.time()
 
         print(f"Training starts: {time.ctime(start)}\n")
