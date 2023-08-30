@@ -112,6 +112,7 @@ class FaceNet:
             batch_size (int)
             n_epochs (int)
             learning_rate (float)
+            frozen (int) : Number of layers upto which parameters are to be froze. defaults to 250
 
         Returns:
             None
