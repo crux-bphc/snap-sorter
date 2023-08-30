@@ -25,7 +25,7 @@ class FaceNet:
             use_default (bool) : allows user to use unaltered model, defaults to False
         """
         self.embedding_size: int = embedding_size
-        self.model = InceptionResnetV1(pretrained='vggface2').eval()
+        self.model: InceptionResnetV1 = InceptionResnetV1(pretrained='vggface2').eval()
         if not use_default:
             self.n_features = self.model.last_linear.in_features
             self.model.last_linear = nn.Linear(self.n_features, self.embedding_size)
