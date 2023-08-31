@@ -25,13 +25,14 @@ class FaceNet:
             use_default (bool) : allows user to use unaltered model, defaults to False
         """
         self.embedding_size: int = embedding_size
-        self.model = InceptionResnetV1(pretrained='vggface2').eval()
+        self.model: InceptionResnetV1 = InceptionResnetV1(pretrained='vggface2').eval()
         if not use_default:
             self.n_features = self.model.last_linear.in_features
             self.model.last_linear = nn.Linear(self.n_features, self.embedding_size)
             self.n_bn_features = self.model.last_bn.num_features
             self.model.last_bn = nn.BatchNorm1d(embedding_size)
         self.model.classify = False
+        self.model.eval()
     
     def forward(self, x: torch.Tensor):
         """
@@ -102,7 +103,7 @@ class FaceNet:
         facenet.model.classify = False
         return facenet
     
-    def train(self, train_data: TripletDataset, batch_size : int, n_epochs : int, learning_rate : float):
+    def train(self, train_data: TripletDataset, batch_size : int, n_epochs : int, learning_rate : float, frozen: int = 250):
         """
         Trains a model on given data
 
@@ -111,6 +112,7 @@ class FaceNet:
             batch_size (int)
             n_epochs (int)
             learning_rate (float)
+            frozen (int) : Number of layers upto which parameters are to be froze. defaults to 250
 
         Returns:
             None
@@ -122,6 +124,15 @@ class FaceNet:
         optimizer = optim.Adam(self.model.parameters(), lr=learning_rate)
 
         self.model.train()
+
+        counter = 0
+        for param in self.model.parameters():
+            if counter < frozen:
+                param.requires_grad=False
+            elif counter >= frozen:
+                param.requires_grad=True
+            counter+=1
+        
         start = time.time()
 
         print(f"Training starts: {time.ctime(start)}\n")
