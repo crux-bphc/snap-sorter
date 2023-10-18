@@ -46,7 +46,7 @@ def write_datapoints(source_path: str, dest_path: str):
                     point = clusterer.Datapoint(embedding, None, imgpath)
                     points.append(point)
             else:
-                raise FaceNotFoundError(imgpath)
+                print(FaceNotFoundError(imgpath))
                 
     with open(dest_path, 'wb') as f:
         pickle.dump(points, f, protocol=pickle.HIGHEST_PROTOCOL)
