@@ -6,7 +6,7 @@ import torch
 import pickle
 from exception import FaceNotFoundError
 
-def cluster_from_file(source_path: str, dest_path: str, epsilon: float):
+def cluster_from_file(source_path: str, dest_path: str, epsilon: float, min_samples: int=5):
     '''
     creates clusters from datapoints stored in source_path and writes them to dest_path
 
@@ -19,7 +19,7 @@ def cluster_from_file(source_path: str, dest_path: str, epsilon: float):
         None
     '''
     points = clusterer.read_datapoints(source_path)
-    clusters = clusterer.create_clusters(points, epsilon)
+    clusters = clusterer.create_clusters(points, epsilon, min_samples)
     clusterer.write_clusters(clusters, dest_path)
     return None
         
