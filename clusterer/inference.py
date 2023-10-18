@@ -69,8 +69,8 @@ class EmbeddingPipeline:
             raise FaceNotFoundError(path)'''
         try:
             for face in faces:
-                if faces is not None:
-                    images.append(transform_to_image(face))
+                #if faces is not None:
+                images.append(transform_to_image(face))
         except Exception as e:
             if faces is None:
                 print(FaceNotFoundError)
@@ -99,10 +99,14 @@ class EmbeddingPipeline:
             transformed_face = transform(converted)
             transformed_faces.append(transformed_face)
         
-        transformed_faces = torch.stack(transformed_faces)
+        if len(transformed_faces)!=0: 
+            transformed_faces = torch.stack(transformed_faces)
         
-        embeddings = self.resnet.embed(transformed_faces)
+            embeddings = self.resnet.embed(transformed_faces)
         
-        return embeddings
+            return embeddings
+        
+        else:
+            return None
     
     
