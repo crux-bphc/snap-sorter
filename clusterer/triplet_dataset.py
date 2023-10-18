@@ -1,6 +1,8 @@
 from torch.utils.data import Dataset
 from torchvision import transforms
 from PIL import Image
+import os
+import random
 
 class TripletDataset(Dataset):
     """
@@ -66,3 +68,37 @@ def create_transform(img_height: int, img_width: int, _mean: list[float]=None,
     transforms.Normalize(mean=mean, std=std)
     ])
     return transform
+
+def extract_triplets_from_directory(root_dir, num_triplets_per_person=10):
+    anchor_images = []
+    positive_images = []
+    negative_images = []
+
+    # List sub-folders (each representing a person)
+    person_folders = [folder for folder in os.listdir(root_dir) if os.path.isdir(os.path.join(root_dir, folder))]
+
+    for person_folder in person_folders:
+        person_path = os.path.join(root_dir, person_folder)
+        person_images = [image for image in os.listdir(person_path) if image.endswith('.jpg') or image.endswith('.png')]
+
+        for _ in range(num_triplets_per_person):
+            # Randomly select anchor and positive images from the same person's folder
+            anchor_image_name = random.choice(person_images)
+            positive_image_name = random.choice(person_images)
+
+            # Randomly select a different person's folder for negative image
+            negative_person_folder = random.choice([folder for folder in person_folders if folder != person_folder])
+            negative_person_path = os.path.join(root_dir, negative_person_folder)
+            negative_person_images = [image for image in os.listdir(negative_person_path) if image.endswith('.jpg') or image.endswith('.png')]
+            negative_image_name = random.choice(negative_person_images)
+
+            # Load images as PIL images
+            anchor_image = Image.open(os.path.join(person_path, anchor_image_name)).convert('RGB')
+            positive_image = Image.open(os.path.join(person_path, positive_image_name)).convert('RGB')
+            negative_image = Image.open(os.path.join(negative_person_path, negative_image_name)).convert('RGB')
+
+            anchor_images.append(anchor_image)
+            positive_images.append(positive_image)
+            negative_images.append(negative_image)
+
+    return anchor_images, positive_images, negative_images
