@@ -65,11 +65,14 @@ class EmbeddingPipeline:
         transform_to_image = torchvision.transforms.ToPILImage()
         image = Image.open(path)
         faces = self.detector(image)
-        if faces is None:
-            raise FaceNotFoundError(path)
-        else:
+        '''if faces is None:
+            raise FaceNotFoundError(path)'''
+        try:
             for face in faces:
                 images.append(transform_to_image(face))
+        except:
+            if faces is None:
+                print("Face not found in path: " + path)
         return images
 
     def _create_embeddings(self, faces: list[Image.Image], transform_height: int = 224, transform_width: int = 224):
