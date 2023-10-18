@@ -69,10 +69,13 @@ class EmbeddingPipeline:
             raise FaceNotFoundError(path)'''
         try:
             for face in faces:
-                images.append(transform_to_image(face))
-        except:
+                if faces is not None:
+                    images.append(transform_to_image(face))
+        except Exception as e:
             if faces is None:
-                print("Face not found in path: " + path)
+                print(FaceNotFoundError)
+            else:
+                print(e)
         return images
 
     def _create_embeddings(self, faces: list[Image.Image], transform_height: int = 224, transform_width: int = 224):
