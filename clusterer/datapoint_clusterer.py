@@ -72,7 +72,7 @@ class Cluster:
         self.size = len(self.paths)
 
 
-def create_clusters(_datapoints: list[Datapoint], _epsilon:float, _min_samples:int=10):
+def create_clusters(_datapoints: list[Datapoint], _epsilon:float, _min_samples:int=5):
     """
     Returns a list of clusters
 
