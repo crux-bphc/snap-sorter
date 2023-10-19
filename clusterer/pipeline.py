@@ -23,7 +23,7 @@ def cluster_from_file(source_path: str, dest_path: str, epsilon: float, min_samp
     clusterer.write_clusters(clusters, dest_path)
     return None
         
-def write_datapoints(source_path: str, dest_path: str):
+def write_datapoints(source_path: str, dest_path: str, pipeline: EmbeddingPipeline= None):
     '''
     reads images from folder, creates datapoints and writes them into .pkl file
     
@@ -35,7 +35,7 @@ def write_datapoints(source_path: str, dest_path: str):
         None
     '''
     points = []
-    pipeline = EmbeddingPipeline()
+    pipeline = EmbeddingPipeline() if pipeline is None else pipeline
     for root, _, filenames in os.walk(source_path):
         for filename in filenames:
             imgpath = os.path.join(root, filename)
