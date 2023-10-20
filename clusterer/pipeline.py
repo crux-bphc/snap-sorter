@@ -53,7 +53,7 @@ def write_datapoints(source_path: str, dest_path: str, pipeline: EmbeddingPipeli
     print("Written succesfully!")
     return None
 
-def get_cluster_ids(clusters: list[clusterer.Cluster], image_path: str):
+def get_cluster_ids(clusters: list[clusterer.Cluster], image_path: str, pipeline: EmbeddingPipeline = None):
     '''
         returns cluster IDs of all faces detected in a particular image
         
@@ -64,7 +64,7 @@ def get_cluster_ids(clusters: list[clusterer.Cluster], image_path: str):
         Returns:
             cluster_ids (np.ndarray): IDs of all faces detected in image
     '''
-    pipeline = EmbeddingPipeline()
+    pipeline = EmbeddingPipeline() if pipeline is None else pipeline
     embeddings = pipeline(image_path)
     lookup = {idx : cluster.id for idx, cluster in enumerate(clusters)}
     if embeddings is not None:
