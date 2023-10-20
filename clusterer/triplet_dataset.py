@@ -113,4 +113,7 @@ def extract_triplets_from_directory(root_dir, num_triplets_per_person=10):
             positive_images.append(positive_image)
             negative_images.append(negative_image)
 
+        if (person_folders.index(person_folder)+1)%5 ==0:
+            print(person_folders.index(person_folder)+1, " folders done")
+
     return anchor_images, positive_images, negative_images
