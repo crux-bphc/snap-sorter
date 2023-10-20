@@ -101,7 +101,9 @@ def extract_triplets_from_directory(root_dir, num_triplets_per_person=10):
             negative_image = Image.open(os.path.join(negative_person_path, negative_image_name)).convert('RGB')
 
             try:
-                anchor_image, positive_image, negative_image = detector([anchor_image, positive_image, negative_image])
+                anchor_image = detector(anchor_image)
+                positive_image = detector(positive_image)
+                negative_image = detector(negative_image)
             except Exception as e:
                 print(e)
                 i-=1
