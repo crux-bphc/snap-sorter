@@ -3,6 +3,7 @@ from torchvision import transforms
 from PIL import Image
 import os
 import random
+from facenet_pytorch import MTCNN
 
 class TripletDataset(Dataset):
     """
@@ -74,6 +75,8 @@ def extract_triplets_from_directory(root_dir, num_triplets_per_person=10):
     positive_images = []
     negative_images = []
 
+    detector = MTCNN(keep_all=False, image_size=224).eval()
+
     # List sub-folders (each representing a person)
     person_folders = [folder for folder in os.listdir(root_dir) if os.path.isdir(os.path.join(root_dir, folder))]
 
@@ -81,7 +84,7 @@ def extract_triplets_from_directory(root_dir, num_triplets_per_person=10):
         person_path = os.path.join(root_dir, person_folder)
         person_images = [image for image in os.listdir(person_path) if image.endswith('.jpg') or image.endswith('.png')]
 
-        for _ in range(num_triplets_per_person):
+        for i in range(num_triplets_per_person):
             # Randomly select anchor and positive images from the same person's folder
             anchor_image_name = random.choice(person_images)
             positive_image_name = random.choice(person_images)
@@ -96,6 +99,13 @@ def extract_triplets_from_directory(root_dir, num_triplets_per_person=10):
             anchor_image = Image.open(os.path.join(person_path, anchor_image_name)).convert('RGB')
             positive_image = Image.open(os.path.join(person_path, positive_image_name)).convert('RGB')
             negative_image = Image.open(os.path.join(negative_person_path, negative_image_name)).convert('RGB')
+
+            try:
+                anchor_image, positive_image, negative_image = detector([anchor_image, positive_image, negative_image])
+            except Exception as e:
+                print(e)
+                i-=1
+
 
             anchor_images.append(anchor_image)
             positive_images.append(positive_image)
