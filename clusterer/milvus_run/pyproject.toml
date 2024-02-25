@@ -1,0 +1,28 @@
+[tool.poetry]
+name = "digiface"
+version = "0.1.0"
+description = ""
+authors = ["majimearun <arunachala0619@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+pymilvus = "^2.3.6"
+tqdm = "^4.66.2"
+torch = {version = "^2.2.0+cpu", source = "pytorch"}
+torchvision = {version = "^0.17.0+cpu", source = "pytorch"}
+jupyter = "^1.0.0"
+ipython = "^8.21.0"
+ipykernel = "^6.29.2"
+facenet-pytorch = "^2.5.3"
+matplotlib = "^3.8.3"
+
+
+[[tool.poetry.source]]
+name = "pytorch"
+url = "https://download.pytorch.org/whl/cpu"
+priority = "explicit"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
